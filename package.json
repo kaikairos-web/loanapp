@@ -1,0 +1,29 @@
+{
+  "name": "ds-personal-loan",
+  "version": "1.0.0",
+  "description": "DS Personal Loan - Modern Lending Platform",
+  "type": "module",
+  "main": "index.html",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "start": "vite"
+  },
+  "keywords": [
+    "loan",
+    "lending",
+    "platform",
+    "financial"
+  ],
+  "author": "davenstarr",
+  "license": "MIT",
+  "devDependencies": {
+    "vite": "^5.0.0"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "^7.2.0",
+    "@supabase/supabase-js": "^2.100.0",
+    "chart.js": "^4.5.1"
+  }
+}
