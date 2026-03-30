@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>DS Personal Loan — Modern Lending Platform</title>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet">
 <script type="module" src="script.js"></script>
 <link rel="stylesheet" href="style.css">
 </head>
@@ -29,9 +29,9 @@
   <!-- NAV -->
   <nav class="landing-nav" id="mainNav">
     <div style="display:flex;align-items:center;gap:36px">
-      <div class="logo">
-        <img class="logo-img" src="image/logo.png" alt="DS Personal Loan logo" style="width:72px;height:72px;">
-        <span class="neon-text">DS Personal Loan</span>
+      <div class="logo-nav">
+        <img src="image/logo.png" alt="DS Personal Loan logo" style="height:48px;width:auto;object-fit:contain;">
+        <span class="neon-text" style="font-size:1.1rem;white-space:nowrap">DS Personal Loan</span>
       </div>
     </div>
     <div class="nav-links">
@@ -49,7 +49,6 @@
   <!-- HERO -->
   <section class="hero">
     <div class="hero-content">
-      <div class="hero-tag"><i class="fa-solid fa-star"></i> Your Trusted Financial Backup</div>
       <h1><span class="neon-text">DS Personal Loan</span><br>Fast, Easy, Reliable</h1>
       <p>Get fast, easy, and reliable financial assistance when you need it most. We offer quick approvals, flexible terms, and hassle-free loan processing.</p>
       <div class="hero-cta">
@@ -303,8 +302,9 @@
       <div class="glass auth-box">
         <div class="auth-logo">
           <div class="logo">
-            <img class="logo-img" src="image/logo.png" alt="DS Personal Loan logo" style="width:72px;height:72px;">
+            <img class="logo-img" src="image/logo.png" alt="DS Personal Loan logo">
             <span class="neon-text">DS Personal Loan</span>
+            <span class="logo-tagline">Your Trusted Financial Backup</span>
           </div>
         </div>
         <h2 class="auth-title">Welcome Back</h2>
@@ -328,10 +328,9 @@
         </div>
         <div class="form-group">
           <label>Password</label>
-          <div class="input-icon" style="position:relative">
-            <i class="fa-solid fa-lock"></i>
+          <div style="position:relative">
             <input type="password" class="form-control" id="loginPassword" placeholder="••••••••" style="padding-right:44px">
-            <span class="pass-toggle" onclick="togglePass('loginPassword',this)">
+            <span class="pass-toggle" data-target="loginPassword">
               <i class="fa-solid fa-eye"></i>
             </span>
           </div>
@@ -339,11 +338,6 @@
 
         <button class="btn btn-primary" style="width:100%;margin-top:8px;justify-content:center" id="loginBtn" onclick="handleLogin()">
           <i class="fa-solid fa-right-to-bracket"></i> Sign In
-        </button>
-
-        <div class="divider">or</div>
-        <button class="btn btn-ghost" style="width:100%;justify-content:center;gap:10px" onclick="showAdminLoginHint()">
-          <i class="fa-solid fa-user-shield"></i> Admin Login
         </button>
 
         <div class="auth-footer-link">
@@ -366,8 +360,9 @@
       <div class="glass auth-box">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:28px">
           <div class="logo">
-            <img class="logo-img" src="image/logo.png" alt="DS Personal Loan logo" style="width:56px;height:56px;">
-            <span class="neon-text" style="font-size:1.1rem">DS Personal Loan</span>
+            <img class="logo-img" src="image/logo.png" alt="DS Personal Loan logo">
+            <span class="neon-text">DS Personal Loan</span>
+            <span class="logo-tagline">Your Trusted Financial Backup</span>
           </div>
           <a href="#" onclick="showPage('login')" style="font-size:.8rem;color:var(--text-muted)">← Back to Login</a>
         </div>
@@ -388,10 +383,6 @@
           <div class="step" data-step="3">
             <div class="step-num">3</div>
             <div class="step-label">Documents</div>
-          </div>
-          <div class="step" data-step="4">
-            <div class="step-num">4</div>
-            <div class="step-label">Verify</div>
           </div>
         </div>
 
@@ -451,18 +442,16 @@
           <div class="form-row">
             <div class="form-group">
               <label>Password *</label>
-              <div class="input-icon" style="position:relative">
-                <i class="fa-solid fa-lock"></i>
+              <div style="position:relative">
                 <input type="password" class="form-control" id="regPassword" placeholder="••••••••" style="padding-right:44px">
-                <span class="pass-toggle" onclick="togglePass('regPassword',this)"><i class="fa-solid fa-eye"></i></span>
+                <span class="pass-toggle" data-target="regPassword"><i class="fa-solid fa-eye"></i></span>
               </div>
             </div>
             <div class="form-group">
               <label>Confirm Password *</label>
-              <div class="input-icon" style="position:relative">
-                <i class="fa-solid fa-lock"></i>
+              <div style="position:relative">
                 <input type="password" class="form-control" id="regConfirmPassword" placeholder="••••••••" style="padding-right:44px">
-                <span class="pass-toggle" onclick="togglePass('regConfirmPassword',this)"><i class="fa-solid fa-eye"></i></span>
+                <span class="pass-toggle" data-target="regConfirmPassword"><i class="fa-solid fa-eye"></i></span>
               </div>
             </div>
           </div>
@@ -555,8 +544,8 @@
             <button class="btn btn-ghost" style="flex:1;justify-content:center" onclick="prevStep(3)">
               <i class="fa-solid fa-arrow-left"></i> Back
             </button>
-            <button class="btn btn-primary" style="flex:1;justify-content:center" id="sendOtpBtn" onclick="sendVerificationEmailAndNext()">
-              Send verification email <i class="fa-solid fa-arrow-right"></i>
+            <button class="btn btn-primary" style="flex:1;justify-content:center" id="sendOtpBtn" onclick="submitRegistration()">
+              <i class="fa-solid fa-paper-plane"></i> Submit Application
             </button>
           </div>
         </div>
@@ -593,11 +582,12 @@
   <div class="dash-layout">
     <aside class="sidebar" id="adminSidebar">
       <div class="sidebar-header">
-        <div class="logo" style="font-size:1.2rem">
-            <img class="logo-img" src="image/logo.png" alt="DS Personal Loan logo" style="width:64px;height:64px;">
+        <div class="logo">
+          <img class="logo-img" src="image/logo.png" alt="DS Personal Loan logo">
           <span class="neon-text">DS Personal Loan</span>
+          <span class="logo-tagline">Your Trusted Financial Backup</span>
         </div>
-        <div style="font-size:.7rem;color:var(--text-muted);margin-top:4px;margin-left:38px">Admin Panel</div>
+        <div style="font-size:.7rem;color:var(--text-muted);margin-top:4px">Admin Panel</div>
       </div>
       <nav class="sidebar-nav">
         <div class="sidebar-section-title">Overview</div>
@@ -795,13 +785,12 @@
   <div class="dash-layout">
     <aside class="sidebar" id="userSidebar">
       <div class="sidebar-header">
-        <div class="logo" style="font-size:1.2rem">
-          <img class="logo-img" src="image/logo.png" alt="DS Personal Loan logo" style="width:64px;height:64px;">
+        <div class="logo">
+          <img class="logo-img" src="image/logo.png" alt="DS Personal Loan logo">
           <span class="neon-text">DS Personal Loan</span>
+          <span class="logo-tagline">Your Trusted Financial Backup</span>
         </div>
       </div>
-      <nav class="sidebar-nav">
-        <div class="sidebar-section-title">Main</div>
         <a href="#" class="active" onclick="userView('overview',this)"><i class="fa-solid fa-gauge"></i> Overview</a>
         <div class="sidebar-section-title">Loans</div>
         <a href="#" onclick="userView('request',this)"><i class="fa-solid fa-plus-circle"></i> Request Loan</a>
@@ -1076,11 +1065,5 @@
   </div>
 </div>
 
-<script type="module">
-  // Expose Vite env vars to the classic `script.js` (which is not a module).
-  window.__SUPABASE_URL__ = import.meta.env.VITE_SUPABASE_URL;
-  window.__SUPABASE_KEY__ = import.meta.env.VITE_SUPABASE_KEY;
-</script>
-<script defer src="script.js"></script>
 </body>
 </html>
