@@ -59,13 +59,23 @@ function toast(msg, type='info', dur=3500) {
 
 function fmt(n){ return '₱'+Number(n).toLocaleString('en-PH',{minimumFractionDigits:2,maximumFractionDigits:2}); }
 function fmtDate(d){ if(!d) return '—'; return new Date(d).toLocaleDateString('en-PH',{year:'numeric',month:'short',day:'numeric'}); }
+function fmtDateTime(d){ if(!d) return '—'; return new Date(d).toLocaleString('en-PH',{year:'numeric',month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'}); }
 function uid(){ return Date.now().toString(36)+Math.random().toString(36).slice(2,7); }
 function addDays(date,days){ const d=new Date(date); d.setDate(d.getDate()+days); return d.toISOString(); }
 
 function showAlert(id,msg){ const el=document.getElementById(id); el.classList.add('show'); if(msg) el.querySelector('span').textContent=msg; }
 function hideAlert(id){ document.getElementById(id)?.classList.remove('show'); }
 function toggleSidebar(id){ document.getElementById(id).classList.toggle('open'); }
-function openModal(id){ document.getElementById(id).classList.add('open'); }
+
+function toggleCollapse(id){
+  const sidebar = document.getElementById(id);
+  sidebar.classList.toggle('collapsed');
+  // Manually update dash-main margin since ~ CSS selector needs direct sibling
+  const main = sidebar.nextElementSibling;
+  if(main && main.classList.contains('dash-main')){
+    main.style.marginLeft = sidebar.classList.contains('collapsed') ? '72px' : '';
+  }
+}function openModal(id){ document.getElementById(id).classList.add('open'); }
 function closeModal(id){ document.getElementById(id).classList.remove('open'); }
 function toggleNotifPanel(id){
   document.querySelectorAll('.notif-panel').forEach(p=>{ if(p.id!==id) p.classList.remove('open'); });
@@ -391,13 +401,18 @@ function renderAdminUsers(){
   const body=document.getElementById('adminUsersBody');
   const users=localData.users.filter(u=>u.role!=='admin');
   document.getElementById('userCountBadge').textContent=`${users.length} Users`;
-  if(!users.length){ body.innerHTML='<tr><td colspan="7" style="text-align:center;color:var(--text-muted);padding:24px">No registered users</td></tr>'; return; }
+  if(!users.length){ body.innerHTML='<tr><td colspan="8" style="text-align:center;color:var(--text-muted);padding:24px">No registered users</td></tr>'; return; }
   body.innerHTML=users.map(u=>`<tr>
     <td><strong>${u.first_name} ${u.last_name}</strong><div style="font-size:.72rem;color:var(--text-muted)">${u.gender||''}</div></td>
     <td>${u.email}</td><td>${u.contact||'—'}</td>
     <td style="font-size:.82rem">${u.job_type||'—'}</td>
     <td>${u.salary?fmt(u.salary):'—'}</td>
     <td>${statusBadge(u.status)}</td>
+    <td style="font-size:.75rem;color:var(--text-muted)">
+      <div>Registered: <span style="color:var(--text-secondary)">${fmtDateTime(u.created_at)}</span></div>
+      ${u.approved_at?`<div>Approved: <span style="color:var(--success)">${fmtDateTime(u.approved_at)}</span></div>`:''}
+      ${u.rejected_at?`<div>Rejected: <span style="color:var(--danger)">${fmtDateTime(u.rejected_at)}</span></div>`:''}
+    </td>
     <td>
       <button class="btn btn-ghost btn-xs" style="margin-right:4px" onclick="viewUserDetail('${u.id}')">View</button>
       ${u.status==='pending'?`<button class="btn btn-success btn-xs" style="margin-right:4px" onclick="approveUser('${u.id}')">Approve</button><button class="btn btn-danger btn-xs" onclick="declineUser('${u.id}')">Reject</button>`:''}
@@ -408,21 +423,42 @@ function renderAdminUsers(){
 function renderAdminLoans(){
   const body=document.getElementById('adminLoansBody');
   const loans=[...localData.loans].reverse();
-  if(!loans.length){ body.innerHTML='<tr><td colspan="7" style="text-align:center;color:var(--text-muted);padding:24px">No loan requests</td></tr>'; return; }
+  if(!loans.length){ body.innerHTML='<tr><td colspan="8" style="text-align:center;color:var(--text-muted);padding:24px">No loan requests</td></tr>'; return; }
   body.innerHTML=loans.map(l=>{
     const user=localData.users.find(u=>u.id===l.user_id)||{first_name:'Unknown',last_name:''};
-    return `<tr><td><strong>${user.first_name} ${user.last_name}</strong></td><td>${fmt(l.amount)}</td><td>${fmt(l.interest)}</td><td><strong style="color:var(--neon)">${fmt(l.total)}</strong></td><td style="font-size:.8rem">${fmtDate(l.created_at)}</td><td>${statusBadge(l.status)}</td>
-    <td>${l.status==='pending'?`<button class="btn btn-success btn-xs" style="margin-right:4px" onclick="approveLoan('${l.id}')">Approve</button><button class="btn btn-danger btn-xs" onclick="declineLoan('${l.id}')">Decline</button>`:'—'}</td></tr>`;
+    const withdrawal = l.withdrawal_method ? `
+      <div style="margin-top:4px;font-size:.72rem;padding:4px 8px;background:rgba(0,212,255,.08);border-radius:6px;border:1px solid rgba(0,212,255,.15);display:inline-block">
+        <i class="fa-solid fa-money-bill-transfer" style="color:var(--neon)"></i>
+        <strong style="color:var(--neon)">${l.withdrawal_method}</strong>
+        ${l.withdrawal_account !== 'N/A' ? `· ${l.withdrawal_account} · ${l.withdrawal_name}` : ''}
+      </div>` : '';
+    return `<tr>
+      <td><strong>${user.first_name} ${user.last_name}</strong>${withdrawal}</td>
+      <td>${fmt(l.amount)}</td><td>${fmt(l.interest)}</td>
+      <td><strong style="color:var(--neon)">${fmt(l.total)}</strong></td>
+      <td style="font-size:.75rem;color:var(--text-muted)">
+        <div>Requested: <span style="color:var(--text-secondary)">${fmtDateTime(l.created_at)}</span></div>
+        ${l.approved_at?`<div>Approved: <span style="color:var(--success)">${fmtDateTime(l.approved_at)}</span></div>`:''}
+        ${l.declined_at?`<div>Declined: <span style="color:var(--danger)">${fmtDateTime(l.declined_at)}</span></div>`:''}
+      </td>
+      <td>${statusBadge(l.status)}</td>
+      <td>${l.status==='pending'?`<button class="btn btn-success btn-xs" style="margin-right:4px" onclick="approveLoan('${l.id}')">Approve</button><button class="btn btn-danger btn-xs" onclick="declineLoan('${l.id}')">Decline</button>`:'—'}</td>
+    </tr>`;
   }).join('');
 }
 
 function renderAdminActive(){
   const body=document.getElementById('adminActiveBody');
   const loans=localData.loans.filter(l=>l.status==='active'||l.status==='disbursed');
-  if(!loans.length){ body.innerHTML='<tr><td colspan="6" style="text-align:center;color:var(--text-muted);padding:24px">No active loans</td></tr>'; return; }
+  if(!loans.length){ body.innerHTML='<tr><td colspan="7" style="text-align:center;color:var(--text-muted);padding:24px">No active loans</td></tr>'; return; }
   body.innerHTML=loans.map(l=>{
     const user=localData.users.find(u=>u.id===l.user_id)||{first_name:'Unknown',last_name:''};
-    return `<tr><td><strong>${user.first_name} ${user.last_name}</strong></td><td>${fmt(l.amount)}</td><td>${fmt(l.interest)}</td><td><strong>${fmt(l.total)}</strong></td><td style="font-size:.82rem;color:var(--warning)">${fmtDate(l.due_date)}</td><td>${statusBadge(l.status)}</td></tr>`;
+    return `<tr><td><strong>${user.first_name} ${user.last_name}</strong></td><td>${fmt(l.amount)}</td><td>${fmt(l.interest)}</td><td><strong>${fmt(l.total)}</strong></td>
+    <td style="font-size:.75rem;color:var(--text-muted)">
+      <div>Approved: <span style="color:var(--success)">${fmtDateTime(l.approved_at||l.disbursed_at)}</span></div>
+    </td>
+    <td style="font-size:.82rem;color:var(--warning)">${fmtDate(l.due_date)}</td>
+    <td>${statusBadge(l.status)}</td></tr>`;
   }).join('');
 }
 
@@ -440,15 +476,17 @@ function renderAdminOverdue(){
 
 // ─── ADMIN ACTIONS ────────────────────────────────────────────────────
 async function approveUser(id){
-  await db.from('users').update({status:'approved'}).eq('id',id);
-  await db.from('notifications').insert([{id:uid(),target:id,message:'Your account has been approved! You can now apply for a loan.',created_at:new Date().toISOString(),read:false}]);
+  const now=new Date().toISOString();
+  await db.from('users').update({status:'approved',approved_at:now}).eq('id',id);
+  await db.from('notifications').insert([{id:uid(),target:id,message:'Your account has been approved! You can now apply for a loan.',created_at:now,read:false}]);
   toast('User approved!','success');
   await loadAdminDashboard(); renderAdminUsers();
 }
 
 async function declineUser(id){
-  await db.from('users').update({status:'rejected'}).eq('id',id);
-  await db.from('notifications').insert([{id:uid(),target:id,message:'Your account application was rejected. Please contact support.',created_at:new Date().toISOString(),read:false}]);
+  const now=new Date().toISOString();
+  await db.from('users').update({status:'rejected',rejected_at:now}).eq('id',id);
+  await db.from('notifications').insert([{id:uid(),target:id,message:'Your account application was rejected. Please contact support.',created_at:now,read:false}]);
   toast('User rejected.','error');
   await loadAdminDashboard(); renderAdminUsers();
 }
@@ -474,18 +512,20 @@ function viewUserDetail(id){
 }
 
 async function approveLoan(lid){
+  const now=new Date().toISOString();
   const dueDate=addDays(new Date(),30);
-  await db.from('loans').update({status:'active',disbursed_at:new Date().toISOString(),due_date:dueDate}).eq('id',lid);
+  await db.from('loans').update({status:'active',approved_at:now,disbursed_at:now,due_date:dueDate}).eq('id',lid);
   const l=localData.loans.find(l=>l.id===lid);
-  if(l) await db.from('notifications').insert([{id:uid(),target:l.user_id,message:`Your loan of ${fmt(l.amount)} has been approved and is now active!`,created_at:new Date().toISOString(),read:false}]);
+  if(l) await db.from('notifications').insert([{id:uid(),target:l.user_id,message:`Your loan of ${fmt(l.amount)} has been approved and is now active!`,created_at:now,read:false}]);
   toast('Loan approved!','success');
   await loadAdminDashboard(); renderAdminLoans();
 }
 
 async function declineLoan(lid){
-  await db.from('loans').update({status:'declined'}).eq('id',lid);
+  const now=new Date().toISOString();
+  await db.from('loans').update({status:'declined',declined_at:now}).eq('id',lid);
   const l=localData.loans.find(l=>l.id===lid);
-  if(l) await db.from('notifications').insert([{id:uid(),target:l.user_id,message:`Your loan request of ${fmt(l.amount)} was declined.`,created_at:new Date().toISOString(),read:false}]);
+  if(l) await db.from('notifications').insert([{id:uid(),target:l.user_id,message:`Your loan request of ${fmt(l.amount)} was declined.`,created_at:now,read:false}]);
   toast('Loan declined.','error');
   await loadAdminDashboard(); renderAdminLoans();
 }
@@ -546,8 +586,14 @@ function renderLimitChart(){
 function renderUserLoans(){
   const body=document.getElementById('userLoansBody');
   const loans=getUserLoans().slice(-5).reverse();
-  if(!loans.length){ body.innerHTML='<tr><td colspan="4" style="text-align:center;color:var(--text-muted);padding:20px;font-size:.85rem">No loans yet. <a href="#" onclick="userView(\'request\',null)" style="color:var(--neon)">Apply now →</a></td></tr>'; return; }
-  body.innerHTML=loans.map(l=>`<tr><td>${fmt(l.amount)}</td><td><strong style="color:var(--neon)">${fmt(l.total)}</strong></td><td style="font-size:.8rem">${fmtDate(l.due_date)||'—'}</td><td>${statusBadge(l.status)}</td></tr>`).join('');
+  if(!loans.length){ body.innerHTML='<tr><td colspan="5" style="text-align:center;color:var(--text-muted);padding:20px;font-size:.85rem">No loans yet. <a href="#" onclick="userView(\'request\',null)" style="color:var(--neon)">Apply now →</a></td></tr>'; return; }
+  body.innerHTML=loans.map(l=>`<tr>
+    <td>${fmt(l.amount)}</td>
+    <td><strong style="color:var(--neon)">${fmt(l.total)}</strong></td>
+    <td style="font-size:.78rem;color:var(--text-muted)">${fmtDateTime(l.created_at)}</td>
+    <td style="font-size:.8rem">${fmtDate(l.due_date)||'—'}</td>
+    <td>${statusBadge(l.status)}</td>
+  </tr>`).join('');
 }
 
 function renderUserNotifications(){
@@ -575,33 +621,75 @@ function updateMaxLoan(){
   document.getElementById('loanAmount').max=remain;
 }
 
+function toggleWithdrawalDetails(){
+  const method = document.getElementById('withdrawalMethod').value;
+  const details = document.getElementById('withdrawalDetails');
+  const label = document.getElementById('withdrawalAccountLabel');
+  if(!method || method === 'Cash Pickup'){
+    details.style.display = 'none'; return;
+  }
+  details.style.display = 'block';
+  const ewallet = ['GCash','Maya (PayMaya)','ShopeePay','GrabPay'];
+  label.textContent = ewallet.includes(method)
+    ? 'Mobile Number *'
+    : 'Account Number *';
+}
+
 async function submitLoanRequest(){
-  const amt=parseFloat(document.getElementById('loanAmount').value)||0;
-  const purpose=document.getElementById('loanPurpose').value.trim();
-  const maxAllowed=Math.max(0,15000-getUsedLimit());
-  const errEl=document.getElementById('loanReqError');
-  errEl.style.display='none';
+  const amt = parseFloat(document.getElementById('loanAmount').value)||0;
+  const purpose = document.getElementById('loanPurpose').value.trim();
+  const withdrawalMethod = document.getElementById('withdrawalMethod').value;
+  const withdrawalAccount = document.getElementById('withdrawalAccount')?.value.trim();
+  const withdrawalName = document.getElementById('withdrawalName')?.value.trim();
+  const maxAllowed = Math.max(0, 15000 - getUsedLimit());
+  const errEl = document.getElementById('loanReqError');
+  errEl.style.display = 'none';
 
   if(!currentUser){ toast('Please log in again','error'); return; }
-  if(currentUser.status!=='approved'){ errEl.style.display='flex'; document.getElementById('loanReqErrorMsg').textContent='Your account must be approved before requesting a loan.'; return; }
-  if(amt<500){ errEl.style.display='flex'; document.getElementById('loanReqErrorMsg').textContent='Minimum loan amount is ₱500'; return; }
-  if(amt>maxAllowed){ errEl.style.display='flex'; document.getElementById('loanReqErrorMsg').textContent=`Maximum allowed is ${fmt(maxAllowed)}`; return; }
+  if(currentUser.status !== 'approved'){
+    errEl.style.display='flex'; document.getElementById('loanReqErrorMsg').textContent='Your account must be approved before requesting a loan.'; return;
+  }
+  if(amt < 500){
+    errEl.style.display='flex'; document.getElementById('loanReqErrorMsg').textContent='Minimum loan amount is ₱500'; return;
+  }
+  if(amt > maxAllowed){
+    errEl.style.display='flex'; document.getElementById('loanReqErrorMsg').textContent=`Maximum allowed is ${fmt(maxAllowed)}`; return;
+  }
+  if(!withdrawalMethod){
+    errEl.style.display='flex'; document.getElementById('loanReqErrorMsg').textContent='Please select a withdrawal method'; return;
+  }
+  if(withdrawalMethod !== 'Cash Pickup' && (!withdrawalAccount || !withdrawalName)){
+    errEl.style.display='flex'; document.getElementById('loanReqErrorMsg').textContent='Please fill in your account details'; return;
+  }
 
-  const btn=document.getElementById('submitLoanBtn');
+  const btn = document.getElementById('submitLoanBtn');
   btn.disabled=true; btn.innerHTML='<div class="spinner"></div> Submitting...';
 
-  const interest=amt*0.20; const total=amt+interest;
-  const loan={ id:uid(), user_id:currentUser.id, amount:amt, interest, total, purpose, status:'pending', created_at:new Date().toISOString(), due_date:null, disbursed_at:null };
+  const interest = amt * 0.20; const total = amt + interest;
+  const loan = {
+    id: uid(), user_id: currentUser.id, amount: amt,
+    interest, total, purpose, status: 'pending',
+    withdrawal_method: withdrawalMethod,
+    withdrawal_account: withdrawalAccount || 'N/A',
+    withdrawal_name: withdrawalName || 'N/A',
+    created_at: new Date().toISOString(), due_date: null, disbursed_at: null
+  };
 
-  const { error }=await db.from('loans').insert([loan]);
+  const { error } = await db.from('loans').insert([loan]);
   if(error){ toast('Failed to submit loan request.','error'); btn.disabled=false; btn.innerHTML='<i class="fa-solid fa-paper-plane"></i> Submit Loan Request'; return; }
 
-  await db.from('notifications').insert([{id:uid(),target:'admin',message:`New loan request from ${currentUser.first_name} ${currentUser.last_name}: ${fmt(amt)}`,created_at:new Date().toISOString(),read:false}]);
+  await db.from('notifications').insert([{
+    id: uid(), target: 'admin',
+    message: `New loan request from ${currentUser.first_name} ${currentUser.last_name}: ${fmt(amt)} via ${withdrawalMethod}`,
+    created_at: new Date().toISOString(), read: false
+  }]);
 
   btn.disabled=false; btn.innerHTML='<i class="fa-solid fa-paper-plane"></i> Submit Loan Request';
   toast('Loan request submitted! Waiting for admin approval.','success');
   document.getElementById('loanAmount').value='';
   document.getElementById('loanPurpose').value='';
+  document.getElementById('withdrawalMethod').value='';
+  document.getElementById('withdrawalDetails').style.display='none';
   calcLoanPreview();
   await loadUserDashboard();
 }
@@ -636,7 +724,13 @@ function renderRepayments(){
   const body=document.getElementById('repaymentBody');
   const reps=localData.repayments.filter(r=>r.user_id===currentUser.id).reverse();
   if(!reps.length){ body.innerHTML='<tr><td colspan="5" style="text-align:center;color:var(--text-muted);padding:24px">No repayments recorded yet</td></tr>'; return; }
-  body.innerHTML=reps.map(r=>`<tr><td style="font-size:.8rem;color:var(--text-muted)">${r.loan_id?.slice(-6)||'—'}</td><td><strong style="color:var(--success)">${fmt(r.amount)}</strong></td><td style="font-size:.8rem">${fmtDate(r.created_at)}</td><td>${r.method||'—'}</td><td>${statusBadge('paid')}</td></tr>`).join('');
+  body.innerHTML=reps.map(r=>`<tr>
+    <td style="font-size:.8rem;color:var(--text-muted)">${r.loan_id?.slice(-6)||'—'}</td>
+    <td><strong style="color:var(--success)">${fmt(r.amount)}</strong></td>
+    <td style="font-size:.78rem;color:var(--text-muted)">${fmtDateTime(r.created_at)}</td>
+    <td>${r.method||'—'}</td>
+    <td>${statusBadge('paid')}</td>
+  </tr>`).join('');
 }
 
 function openRepayModal(lid){
@@ -666,6 +760,11 @@ window.addEventListener('load', async () => {
   await new Promise(r=>setTimeout(r,1200));
   hideLoader();
 
+  // Register service worker for PWA
+  if('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/loanapp/sw.js').catch(()=>{});
+  }
+
   // Restore session
   const saved=loadSession();
   if(saved){
@@ -685,17 +784,29 @@ window.addEventListener('load', async () => {
 document.addEventListener('click',(e)=>{
   if(!e.target.closest('.notif-panel')&&!e.target.closest('.notif-btn'))
     document.querySelectorAll('.notif-panel').forEach(p=>p.classList.remove('open'));
-  if(!e.target.closest('.sidebar')&&!e.target.closest('.mobile-toggle'))
+  if(!e.target.closest('.sidebar')&&!e.target.closest('.mobile-toggle-inline'))
     document.querySelectorAll('.sidebar').forEach(s=>s.classList.remove('open'));
+
+  // Ripple on sidebar nav links
+  const navItem = e.target.closest('.sidebar-nav a, .sidebar-nav button');
+  if(navItem){
+    const ripple = document.createElement('span');
+    const rect = navItem.getBoundingClientRect();
+    const size = Math.max(rect.width, rect.height);
+    ripple.className = 'ripple';
+    ripple.style.cssText = `width:${size}px;height:${size}px;left:${e.clientX-rect.left-size/2}px;top:${e.clientY-rect.top-size/2}px`;
+    navItem.appendChild(ripple);
+    setTimeout(()=>ripple.remove(), 500);
+  }
 });
 
 // ─── GLOBAL EXPORTS ───────────────────────────────────────────────────
 Object.assign(window, {
   showPage, togglePass, handleLogin, handleLogout,
   nextStep, prevStep, handleFileUpload, submitRegistration,
-  adminView, toggleSidebar, toggleNotifPanel, closeNotif,
+  adminView, toggleSidebar, toggleCollapse, toggleNotifPanel, closeNotif,
   filterAdminTable, approveUser, declineUser, viewUserDetail,
   approveLoan, declineLoan,
-  userView, calcLoanPreview, submitLoanRequest,
+  userView, calcLoanPreview, toggleWithdrawalDetails, submitLoanRequest,
   openRepayModal, closeModal, submitRepayment,
 });

@@ -4,6 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>DS Personal Loan — Modern Lending Platform</title>
+<meta name="description" content="Your Trusted Financial Backup — fast, easy, reliable personal loans.">
+<meta name="theme-color" content="#0a1628">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="DS Loan">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="image/logo.png">
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet">
 <script type="module" src="script.js"></script>
 <link rel="stylesheet" href="style.css">
@@ -587,34 +595,58 @@
           <span class="neon-text">DS Personal Loan</span>
           <span class="logo-tagline">Your Trusted Financial Backup</span>
         </div>
-        <div style="font-size:.7rem;color:var(--text-muted);margin-top:4px">Admin Panel</div>
+        <div class="admin-badge">Admin Panel</div>
+        <button class="sidebar-collapse-btn" onclick="toggleCollapse('adminSidebar')" title="Toggle Sidebar">
+          <i class="fa-solid fa-chevron-left"></i>
+        </button>
       </div>
       <nav class="sidebar-nav">
         <div class="sidebar-section-title">Overview</div>
-        <a href="#" class="active" onclick="adminView('dashboard',this)"><i class="fa-solid fa-gauge"></i> Dashboard</a>
+        <a href="#" class="active" onclick="adminView('dashboard',this)">
+          <span class="nav-icon"><i class="fa-solid fa-gauge"></i></span>
+          <span class="nav-label">Dashboard</span>
+        </a>
         <div class="sidebar-section-title">Management</div>
-        <a href="#" onclick="adminView('users',this)"><i class="fa-solid fa-users"></i> User Management</a>
-        <a href="#" onclick="adminView('loans',this)"><i class="fa-solid fa-file-invoice-dollar"></i> Loan Requests</a>
-        <a href="#" onclick="adminView('active',this)"><i class="fa-solid fa-circle-dot"></i> Active Loans</a>
-        <a href="#" onclick="adminView('overdue',this)"><i class="fa-solid fa-triangle-exclamation"></i> Overdue Loans</a>
+        <a href="#" onclick="adminView('users',this)">
+          <span class="nav-icon"><i class="fa-solid fa-users"></i></span>
+          <span class="nav-label">User Management</span>
+        </a>
+        <a href="#" onclick="adminView('loans',this)">
+          <span class="nav-icon"><i class="fa-solid fa-file-invoice-dollar"></i></span>
+          <span class="nav-label">Loan Requests</span>
+        </a>
+        <a href="#" onclick="adminView('active',this)">
+          <span class="nav-icon"><i class="fa-solid fa-circle-dot"></i></span>
+          <span class="nav-label">Active Loans</span>
+        </a>
+        <a href="#" onclick="adminView('overdue',this)">
+          <span class="nav-icon"><i class="fa-solid fa-triangle-exclamation"></i></span>
+          <span class="nav-label">Overdue Loans</span>
+        </a>
       </nav>
       <div class="sidebar-footer">
         <div class="sidebar-user">
           <div class="user-avatar">A</div>
           <div class="user-info">
             <strong>Admin</strong>
-            <small>davenstarr@gmail.com</small>
+            <small>DS Personal Loan</small>
           </div>
         </div>
-        <button class="btn btn-ghost btn-sm" style="width:100%;justify-content:center;margin-top:14px" onclick="handleLogout()">
-          <i class="fa-solid fa-right-from-bracket"></i> Logout
+        <button class="sidebar-logout" onclick="handleLogout()">
+          <i class="fa-solid fa-right-from-bracket"></i>
+          <span>Logout</span>
         </button>
       </div>
     </aside>
 
     <main class="dash-main">
       <div class="dash-topbar">
-        <h2 id="adminTopTitle">Dashboard</h2>
+        <div style="display:flex;align-items:center;gap:12px">
+          <button class="mobile-toggle-inline" onclick="toggleSidebar('adminSidebar')">
+            <i class="fa-solid fa-bars"></i>
+          </button>
+          <h2 id="adminTopTitle">Dashboard</h2>
+        </div>
         <div class="topbar-right">
           <div class="search-bar" style="width:220px">
             <i class="fa-solid fa-search"></i>
@@ -773,9 +805,7 @@
       </div>
     </main>
   </div>
-  <button class="mobile-toggle" onclick="toggleSidebar('adminSidebar')">
-    <i class="fa-solid fa-bars"></i>
-  </button>
+<!-- END ADMIN DASH -->
 </div>
 
 <!-- ══════════════════════════════════════════════════════════════════
@@ -790,14 +820,37 @@
           <span class="neon-text">DS Personal Loan</span>
           <span class="logo-tagline">Your Trusted Financial Backup</span>
         </div>
+        <button class="sidebar-collapse-btn" onclick="toggleCollapse('userSidebar')" title="Toggle Sidebar">
+          <i class="fa-solid fa-chevron-left"></i>
+        </button>
       </div>
-        <a href="#" class="active" onclick="userView('overview',this)"><i class="fa-solid fa-gauge"></i> Overview</a>
+      <nav class="sidebar-nav">
+        <div class="sidebar-section-title">Main</div>
+        <a href="#" class="active" onclick="userView('overview',this)">
+          <span class="nav-icon"><i class="fa-solid fa-gauge"></i></span>
+          <span class="nav-label">Overview</span>
+        </a>
         <div class="sidebar-section-title">Loans</div>
-        <a href="#" onclick="userView('request',this)"><i class="fa-solid fa-plus-circle"></i> Request Loan</a>
-        <a href="#" onclick="userView('disbursed',this)"><i class="fa-solid fa-money-bill-transfer"></i> Disbursed Loans</a>
-        <a href="#" onclick="userView('active',this)"><i class="fa-solid fa-circle-dot"></i> Active Loans</a>
-        <a href="#" onclick="userView('overdue',this)"><i class="fa-solid fa-triangle-exclamation"></i> Overdue Loans</a>
-        <a href="#" onclick="userView('repayment',this)"><i class="fa-solid fa-receipt"></i> Repayments</a>
+        <a href="#" onclick="userView('request',this)">
+          <span class="nav-icon"><i class="fa-solid fa-plus-circle"></i></span>
+          <span class="nav-label">Request Loan</span>
+        </a>
+        <a href="#" onclick="userView('disbursed',this)">
+          <span class="nav-icon"><i class="fa-solid fa-money-bill-transfer"></i></span>
+          <span class="nav-label">Disbursed Loans</span>
+        </a>
+        <a href="#" onclick="userView('active',this)">
+          <span class="nav-icon"><i class="fa-solid fa-circle-dot"></i></span>
+          <span class="nav-label">Active Loans</span>
+        </a>
+        <a href="#" onclick="userView('overdue',this)">
+          <span class="nav-icon"><i class="fa-solid fa-triangle-exclamation"></i></span>
+          <span class="nav-label">Overdue Loans</span>
+        </a>
+        <a href="#" onclick="userView('repayment',this)">
+          <span class="nav-icon"><i class="fa-solid fa-receipt"></i></span>
+          <span class="nav-label">Repayments</span>
+        </a>
       </nav>
       <div class="sidebar-footer">
         <div class="sidebar-user">
@@ -807,15 +860,21 @@
             <small id="sidebarUserEmail">user@email.com</small>
           </div>
         </div>
-        <button class="btn btn-ghost btn-sm" style="width:100%;justify-content:center;margin-top:14px" onclick="handleLogout()">
-          <i class="fa-solid fa-right-from-bracket"></i> Logout
+        <button class="sidebar-logout" onclick="handleLogout()">
+          <i class="fa-solid fa-right-from-bracket"></i>
+          <span>Logout</span>
         </button>
       </div>
     </aside>
 
     <main class="dash-main">
       <div class="dash-topbar">
-        <h2 id="userTopTitle">Overview</h2>
+        <div style="display:flex;align-items:center;gap:12px">
+          <button class="mobile-toggle-inline" onclick="toggleSidebar('userSidebar')">
+            <i class="fa-solid fa-bars"></i>
+          </button>
+          <h2 id="userTopTitle">Overview</h2>
+        </div>
         <div class="topbar-right">
           <div class="notif-btn" onclick="toggleNotifPanel('userNotif')">
             <i class="fa-solid fa-bell"></i>
@@ -934,9 +993,54 @@
                   <span style="font-size:.72rem;color:var(--text-muted)">Max: <span id="maxLoanDisplay">₱15,000</span></span>
                 </div>
               </div>
+
               <div class="form-group">
                 <label>Purpose / Notes</label>
                 <textarea class="form-control" id="loanPurpose" rows="3" placeholder="Briefly describe the purpose of this loan..."></textarea>
+              </div>
+
+              <!-- WITHDRAWAL METHOD -->
+              <div class="form-group">
+                <label>Withdrawal Method *</label>
+                <select class="form-control" id="withdrawalMethod" onchange="toggleWithdrawalDetails()">
+                  <option value="">Select how you want to receive the money</option>
+                  <optgroup label="E-Wallet">
+                    <option value="GCash">GCash</option>
+                    <option value="Maya (PayMaya)">Maya (PayMaya)</option>
+                    <option value="ShopeePay">ShopeePay</option>
+                    <option value="GrabPay">GrabPay</option>
+                  </optgroup>
+                  <optgroup label="Bank Transfer">
+                    <option value="BDO">BDO</option>
+                    <option value="BPI">BPI</option>
+                    <option value="Metrobank">Metrobank</option>
+                    <option value="UnionBank">UnionBank</option>
+                    <option value="Landbank">Landbank</option>
+                    <option value="PNB">PNB</option>
+                    <option value="RCBC">RCBC</option>
+                    <option value="Security Bank">Security Bank</option>
+                  </optgroup>
+                  <optgroup label="Other">
+                    <option value="Cash Pickup">Cash Pickup (In-person)</option>
+                    <option value="Remittance">Remittance Center</option>
+                  </optgroup>
+                </select>
+              </div>
+
+              <div id="withdrawalDetails" style="display:none">
+                <div class="glass2" style="padding:18px;margin-bottom:20px;border:1px solid rgba(0,212,255,.2)">
+                  <div style="font-size:.78rem;color:var(--neon);margin-bottom:12px;font-weight:600;text-transform:uppercase;letter-spacing:.08em">
+                    <i class="fa-solid fa-circle-info"></i> Withdrawal Details
+                  </div>
+                  <div class="form-group" style="margin-bottom:12px">
+                    <label id="withdrawalAccountLabel">Account Number / Mobile Number *</label>
+                    <input class="form-control" id="withdrawalAccount" placeholder="e.g. 09XX XXX XXXX">
+                  </div>
+                  <div class="form-group" style="margin-bottom:0">
+                    <label>Account Name *</label>
+                    <input class="form-control" id="withdrawalName" placeholder="Full name on account">
+                  </div>
+                </div>
               </div>
 
               <!-- LOAN PREVIEW -->
@@ -1023,9 +1127,7 @@
       </div>
     </main>
   </div>
-  <button class="mobile-toggle" onclick="toggleSidebar('userSidebar')">
-    <i class="fa-solid fa-bars"></i>
-  </button>
+<!-- END USER DASH -->
 </div>
 
 <!-- ══════════════════════════════════════════════════════════════════
