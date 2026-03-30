@@ -8,7 +8,8 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "start": "vite"
+    "start": "vite",
+    "deploy": "npm run build && gh-pages -d dist"
   },
   "keywords": [
     "loan",
@@ -19,6 +20,7 @@
   "author": "davenstarr",
   "license": "MIT",
   "devDependencies": {
+    "gh-pages": "^6.3.0",
     "vite": "^5.0.0"
   },
   "dependencies": {
