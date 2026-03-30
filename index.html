@@ -1,0 +1,1069 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DS Personal Loan — Modern Lending Platform</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet">
+  <script type="module" crossorigin src="/loanapp/assets/index-g_FHfWFl.js"></script>
+  <link rel="stylesheet" crossorigin href="/loanapp/assets/index-Dc-KuX3B.css">
+</head>
+<body>
+
+<div class="bg-mesh"></div>
+
+<!-- LOADER -->
+<div class="loader-overlay" id="loader">
+  <div class="spinner" style="width:40px;height:40px;border-width:3px"></div>
+  <p style="color:var(--text-secondary);font-size:.85rem">Loading DS Personal Loan...</p>
+</div>
+
+<!-- TOAST CONTAINER -->
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- ══════════════════════════════════════════════════════════════════
+     LANDING PAGE
+══════════════════════════════════════════════════════════════════ -->
+<div class="page active" id="landing">
+
+  <!-- NAV -->
+  <nav class="landing-nav" id="mainNav">
+    <div style="display:flex;align-items:center;gap:36px">
+      <div class="logo-nav">
+        <img src="/loanapp/assets/logo-Bp6-olO-.png" alt="DS Personal Loan logo" style="height:48px;width:auto;object-fit:contain;">
+        <span class="neon-text" style="font-size:1.1rem;white-space:nowrap">DS Personal Loan</span>
+      </div>
+    </div>
+    <div class="nav-links">
+      <a href="#features">Features</a>
+      <a href="#about">About</a>
+      <a href="#services">Services</a>
+      <a href="#faq">FAQ</a>
+      <a href="#contact">Contact</a>
+    </div>
+    <button class="btn btn-primary btn-sm" onclick="showPage('login')">
+      <i class="fa-solid fa-right-to-bracket"></i> Get Started
+    </button>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-content">
+      <h1><span class="neon-text">DS Personal Loan</span><br>Fast, Easy, Reliable</h1>
+      <p>Get fast, easy, and reliable financial assistance when you need it most. We offer quick approvals, flexible terms, and hassle-free loan processing.</p>
+      <div class="hero-cta">
+        <button class="btn btn-primary" onclick="showPage('register')">
+          <i class="fa-solid fa-rocket"></i> Apply Now
+        </button>
+        <button class="btn btn-ghost" onclick="showPage('login')">
+          <i class="fa-solid fa-circle-check"></i> Get Pre-Qualified Today
+        </button>
+      </div>
+    </div>
+
+    <div class="hero-visual">
+      <div class="orbit-ring"></div>
+      <div class="hero-card-float">
+        <div class="float-card">
+          <div class="float-card-header">
+            <div class="float-card-icon"><i class="fa-solid fa-chart-line"></i></div>
+            <div>
+              <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:1rem">Personal Loan Support</div>
+              <div style="font-size:.78rem;color:var(--text-muted)">Quick Assistance</div>
+            </div>
+            <div style="margin-left:auto"><span class="badge badge-success"><i class="fa-solid fa-circle" style="font-size:.5rem"></i> Live</span></div>
+          </div>
+          <div style="font-size:.8rem;color:var(--text-muted);margin-bottom:8px">Flexible Loan Options</div>
+          <div style="font-family:'Syne',sans-serif;font-size:2.2rem;font-weight:800" class="neon-text">₱15,000</div>
+          <div style="width:100%;height:6px;background:rgba(0,212,255,.1);border-radius:3px;margin:14px 0">
+            <div style="width:33%;height:100%;background:linear-gradient(90deg,var(--neon2),var(--neon));border-radius:3px;box-shadow:var(--neon-glow-sm)"></div>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:.78rem;color:var(--text-muted);margin-bottom:6px">
+            <span>Fast Processing</span><span>Flexible Terms</span>
+          </div>
+          <div class="stat-row">
+            <div class="stat-mini"><span>Approval</span><strong>Same Day</strong></div>
+            <div class="stat-mini"><span>Terms</span><strong>Flexible</strong></div>
+            <div class="stat-mini"><span>Support</span><strong style="color:var(--success)">Friendly</strong></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section class="section" id="features">
+    <div class="section-tag">Why Choose Us</div>
+    <h2>Everything You Need<br><span class="neon-text">for Personal Loans</span></h2>
+    <p class="lead">At DS Personal Loan, we understand that financial emergencies can happen anytime. We are committed to providing fast and reliable loan solutions to help you move forward with confidence.</p>
+    <div class="features-grid">
+      <div class="glass feature-card fade-up">
+        <div class="feat-icon"><i class="fa-solid fa-bolt"></i></div>
+        <h4>Fast Approval</h4>
+        <p>Same-day approval is possible depending on verification.</p>
+      </div>
+      <div class="glass feature-card fade-up">
+        <div class="feat-icon"><i class="fa-solid fa-shield-halved"></i></div>
+        <h4>Minimal Requirements</h4>
+        <p>Simple requirements to help you apply with less hassle.</p>
+      </div>
+      <div class="glass feature-card fade-up">
+        <div class="feat-icon"><i class="fa-solid fa-calculator"></i></div>
+        <h4>Flexible Payment Options</h4>
+        <p>Choose payment terms that match your budget and timeline.</p>
+      </div>
+      <div class="glass feature-card fade-up">
+        <div class="feat-icon"><i class="fa-solid fa-chart-bar"></i></div>
+        <h4>Transparent and Fair Terms</h4>
+        <p>Clear computations and straightforward loan conditions.</p>
+      </div>
+      <div class="glass feature-card fade-up">
+        <div class="feat-icon"><i class="fa-solid fa-bell"></i></div>
+        <h4>Friendly Customer Support</h4>
+        <p>Our team is here to guide you throughout your loan journey.</p>
+      </div>
+      <div class="glass feature-card fade-up">
+        <div class="feat-icon"><i class="fa-solid fa-mobile-screen-button"></i></div>
+        <h4>Need Cash Today?</h4>
+        <p>Apply now and get approved quickly with DS Personal Loan.</p>
+      </div>
+    </div>
+    <div style="margin-top:26px;text-align:center">
+      <button class="btn btn-primary" onclick="showPage('register')"><i class="fa-solid fa-paper-plane"></i> Apply Now</button>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="section" id="about" style="background:rgba(0,20,45,.3);border-top:1px solid var(--border-soft);border-bottom:1px solid var(--border-soft)">
+    <div class="section-tag">About Us</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center">
+      <div>
+        <h2>Who We Are<br><span class="neon-text">DS Personal Loan</span></h2>
+        <p class="lead" style="margin-top:18px">DS Personal Loan is a trusted financial service dedicated to helping individuals manage their financial needs with ease. We provide simple, fast, and secure loan solutions designed to support you during urgent situations.</p>
+        <p style="color:var(--text-muted);font-size:.87rem;line-height:1.75;margin-top:16px">Our mission is to provide fast, reliable, and accessible financial support while maintaining transparency, fairness, and trust in every transaction. Our vision is to become a trusted and leading personal loan provider known for integrity, speed, and customer satisfaction.</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:32px">
+          <div class="glass2" style="padding:18px">
+            <div style="font-family:'Syne',sans-serif;font-size:1.8rem;font-weight:800;color:var(--neon)">Fast</div>
+            <div style="font-size:.78rem;color:var(--text-muted);margin-top:4px">Reliable Support</div>
+          </div>
+          <div class="glass2" style="padding:18px">
+            <div style="font-family:'Syne',sans-serif;font-size:1.8rem;font-weight:800;color:var(--success)">Fair</div>
+            <div style="font-size:.78rem;color:var(--text-muted);margin-top:4px">Transparent Terms</div>
+          </div>
+        </div>
+      </div>
+      <div class="glass" style="padding:36px">
+        <h4 style="margin-bottom:20px;font-size:1.05rem">How to Apply</h4>
+        <div style="display:flex;flex-direction:column;gap:0">
+          <div style="display:flex;gap:16px;padding-bottom:20px;border-left:2px solid var(--neon2);margin-left:10px;padding-left:20px">
+            <div>
+              <div style="width:20px;height:20px;border-radius:50%;background:var(--neon2);display:flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:700;color:#001a2e;margin-left:-31px;margin-bottom:6px;float:left;margin-right:10px">1</div>
+              <strong style="font-size:.9rem">Fill Out Application</strong>
+              <p style="font-size:.8rem;color:var(--text-muted);margin-top:4px">Complete the application form with your details.</p>
+            </div>
+          </div>
+          <div style="display:flex;gap:16px;padding-bottom:20px;border-left:2px solid var(--neon2);margin-left:10px;padding-left:20px">
+            <div>
+              <div style="width:20px;height:20px;border-radius:50%;background:var(--neon2);display:flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:700;color:#001a2e;margin-left:-31px;margin-bottom:6px;float:left;margin-right:10px">2</div>
+              <strong style="font-size:.9rem">Submit Requirements</strong>
+              <p style="font-size:.8rem;color:var(--text-muted);margin-top:4px">Provide valid ID and required supporting documents.</p>
+            </div>
+          </div>
+          <div style="display:flex;gap:16px;padding-bottom:20px;border-left:2px solid var(--neon2);margin-left:10px;padding-left:20px">
+            <div>
+              <div style="width:20px;height:20px;border-radius:50%;background:var(--neon2);display:flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:700;color:#001a2e;margin-left:-31px;margin-bottom:6px;float:left;margin-right:10px">3</div>
+              <strong style="font-size:.9rem">Wait for Approval</strong>
+              <p style="font-size:.8rem;color:var(--text-muted);margin-top:4px">Verification is completed before loan approval.</p>
+            </div>
+          </div>
+          <div style="display:flex;gap:16px;margin-left:10px;padding-left:20px">
+            <div>
+              <div style="width:20px;height:20px;border-radius:50%;background:var(--success);display:flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:700;color:#001a2e;margin-left:-31px;margin-bottom:6px;float:left;margin-right:10px">4</div>
+              <strong style="font-size:.9rem">Receive Funds</strong>
+              <p style="font-size:.8rem;color:var(--text-muted);margin-top:4px">Funds are released after successful approval.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section class="section" id="services" style="background:rgba(0,18,38,.35);border-top:1px solid var(--border-soft);border-bottom:1px solid var(--border-soft)">
+    <div class="section-tag">Services</div>
+    <h2>Personal Loan<br><span class="neon-text">Loan Features</span></h2>
+    <p class="lead">We offer quick and flexible personal loans for emergency expenses, medical needs, bills payment, business capital, education support, and personal use.</p>
+    <div class="features-grid">
+      <div class="glass feature-card fade-up"><div class="feat-icon"><i class="fa-solid fa-gauge-high"></i></div><h4>Fast Processing</h4><p>Quick turnaround for qualified applications.</p></div>
+      <div class="glass feature-card fade-up"><div class="feat-icon"><i class="fa-solid fa-calendar-days"></i></div><h4>Flexible Terms</h4><p>Short-term and long-term options are available.</p></div>
+      <div class="glass feature-card fade-up"><div class="feat-icon"><i class="fa-solid fa-percent"></i></div><h4>Affordable Interest</h4><p>Competitive and fair interest options.</p></div>
+      <div class="glass feature-card fade-up"><div class="feat-icon"><i class="fa-solid fa-list-check"></i></div><h4>Easy Application</h4><p>Simple process from application to release of funds.</p></div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section" id="faq">
+    <div class="section-tag">FAQ</div>
+    <h2>Frequently Asked<br><span class="neon-text">Questions</span></h2>
+    <div class="glass" style="padding:24px;display:grid;gap:14px">
+      <p><strong>1. How fast is the approval?</strong><br><span style="color:var(--text-muted)">Approval can be as fast as same day depending on verification.</span></p>
+      <p><strong>2. What are the requirements?</strong><br><span style="color:var(--text-muted)">Basic requirements include valid ID, proof of income, and contact details.</span></p>
+      <p><strong>3. How will I receive the money?</strong><br><span style="color:var(--text-muted)">Funds can be sent via bank transfer, e-wallet, or agreed method.</span></p>
+      <p><strong>4. Can I apply even with no credit history?</strong><br><span style="color:var(--text-muted)">Yes, applications are evaluated based on multiple factors.</span></p>
+      <p><strong>5. What happens if I miss a payment?</strong><br><span style="color:var(--text-muted)">Late payments may incur penalties. We encourage communication to arrange solutions.</span></p>
+      <p><strong>6. Is DS Personal Loan legit?</strong><br><span style="color:var(--text-muted)">Yes, we are committed to transparent and fair lending practices.</span></p>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="contact-section" id="contact">
+    <div class="section-tag">Contact Us</div>
+    <h2>Have Questions?<br><span class="neon-text">We Are Here to Help</span></h2>
+    <div class="contact-grid">
+      <div class="glass contact-info">
+        <h4 style="margin-bottom:24px;font-size:1rem">Reach Out to Us</h4>
+        <div class="contact-item">
+          <div class="contact-item-icon"><i class="fa-solid fa-phone"></i></div>
+          <div>
+            <h5>Phone</h5>
+            <p>(Your number)</p>
+            <p style="font-size:.82rem;color:var(--text-muted)">Mon-Fri, 8AM-6PM</p>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-item-icon"><i class="fa-solid fa-envelope"></i></div>
+          <div>
+            <h5>Email</h5>
+            <p>(Your email)</p>
+            <p style="font-size:.82rem;color:var(--text-muted)">We reply within 24 hours</p>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-item-icon"><i class="fa-solid fa-location-dot"></i></div>
+          <div>
+            <h5>Office</h5>
+            <p>(Add your business location)</p>
+            <p style="font-size:.82rem;color:var(--text-muted)">Service Area: Philippines</p>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-item-icon"><i class="fa-brands fa-facebook"></i></div>
+          <div>
+            <h5>Facebook</h5>
+            <p>DS Personal Loan</p>
+            <p style="font-size:.82rem;color:var(--text-muted)">Message us for quick assistance</p>
+          </div>
+        </div>
+        <div style="display:flex;gap:10px;margin-top:28px">
+          <a href="#" class="btn btn-ghost btn-sm"><i class="fa-brands fa-facebook"></i></a>
+          <a href="#" class="btn btn-ghost btn-sm"><i class="fa-brands fa-twitter"></i></a>
+          <a href="#" class="btn btn-ghost btn-sm"><i class="fa-brands fa-instagram"></i></a>
+        </div>
+      </div>
+      <div class="glass" style="padding:36px">
+        <h4 style="margin-bottom:24px;font-size:1rem">Message Us Now</h4>
+        <div class="form-row">
+          <div class="form-group">
+            <label>First Name</label>
+            <input class="form-control" placeholder="Juan">
+          </div>
+          <div class="form-group">
+            <label>Last Name</label>
+            <input class="form-control" placeholder="dela Cruz">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input class="form-control" placeholder="juan@email.com" type="email">
+        </div>
+        <div class="form-group">
+          <label>Message</label>
+          <textarea class="form-control" rows="4" placeholder="How can we help you?"></textarea>
+        </div>
+        <button class="btn btn-primary" style="width:100%">
+          <i class="fa-solid fa-paper-plane"></i> Message Us Now
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>© 2025 DS Personal Loan · Responsible Lending · Terms and conditions apply.</p>
+    <p style="margin-top:8px;font-size:.78rem;color:var(--text-muted)">DS Personal Loan promotes responsible lending. Loan approval is subject to verification and assessment. Terms and conditions apply.</p>
+  </footer>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════
+     LOGIN PAGE
+══════════════════════════════════════════════════════════════════ -->
+<div class="page" id="login">
+  <div class="auth-page">
+    <div class="auth-container">
+      <div class="glass auth-box">
+        <div class="auth-logo">
+          <div class="logo">
+            <img class="logo-img" src="/loanapp/assets/logo-Bp6-olO-.png" alt="DS Personal Loan logo">
+            <span class="neon-text">DS Personal Loan</span>
+            <span class="logo-tagline">Your Trusted Financial Backup</span>
+          </div>
+        </div>
+        <h2 class="auth-title">Welcome Back</h2>
+        <p class="auth-sub">Sign in to your account</p>
+
+        <div class="alert alert-error" id="loginError">
+          <i class="fa-solid fa-circle-exclamation"></i>
+          <span id="loginErrorMsg">Invalid credentials</span>
+        </div>
+        <div class="alert alert-success" id="loginSuccess">
+          <i class="fa-solid fa-circle-check"></i>
+          <span id="loginSuccessMsg"></span>
+        </div>
+
+        <div class="form-group">
+          <label>Email Address</label>
+          <div class="input-icon">
+            <i class="fa-solid fa-envelope"></i>
+            <input type="email" class="form-control" id="loginEmail" placeholder="your@email.com">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <div style="position:relative">
+            <input type="password" class="form-control" id="loginPassword" placeholder="••••••••" style="padding-right:44px">
+            <span class="pass-toggle" data-target="loginPassword">
+              <i class="fa-solid fa-eye"></i>
+            </span>
+          </div>
+        </div>
+
+        <button class="btn btn-primary" style="width:100%;margin-top:8px;justify-content:center" id="loginBtn" onclick="handleLogin()">
+          <i class="fa-solid fa-right-to-bracket"></i> Sign In
+        </button>
+
+        <div class="auth-footer-link">
+          Don't have an account? <a href="#" onclick="showPage('register')">Create Account</a>
+        </div>
+        <div style="text-align:center;margin-top:12px">
+          <a href="#" onclick="showPage('landing')" style="font-size:.8rem;color:var(--text-muted)">← Back to Home</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════
+     REGISTER PAGE
+══════════════════════════════════════════════════════════════════ -->
+<div class="page" id="register">
+  <div class="auth-page" style="padding:40px 24px">
+    <div class="auth-container" style="max-width:620px">
+      <div class="glass auth-box">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:28px">
+          <div class="logo">
+            <img class="logo-img" src="/loanapp/assets/logo-Bp6-olO-.png" alt="DS Personal Loan logo">
+            <span class="neon-text">DS Personal Loan</span>
+            <span class="logo-tagline">Your Trusted Financial Backup</span>
+          </div>
+          <a href="#" onclick="showPage('login')" style="font-size:.8rem;color:var(--text-muted)">← Back to Login</a>
+        </div>
+
+        <h2 class="auth-title" style="font-size:1.4rem">Create Account</h2>
+        <p class="auth-sub" style="margin-bottom:24px">Fill in your details to apply for membership</p>
+
+        <!-- STEP INDICATOR -->
+        <div class="step-indicator" id="stepIndicator">
+          <div class="step active" data-step="1">
+            <div class="step-num">1</div>
+            <div class="step-label">Personal</div>
+          </div>
+          <div class="step" data-step="2">
+            <div class="step-num">2</div>
+            <div class="step-label">Employment</div>
+          </div>
+          <div class="step" data-step="3">
+            <div class="step-num">3</div>
+            <div class="step-label">Documents</div>
+          </div>
+        </div>
+
+        <div class="alert alert-error" id="regError">
+          <i class="fa-solid fa-circle-exclamation"></i>
+          <span id="regErrorMsg"></span>
+        </div>
+
+        <!-- STEP 1: PERSONAL INFO -->
+        <div class="step-content active" id="stepContent1">
+          <div class="form-row">
+            <div class="form-group">
+              <label>First Name *</label>
+              <input class="form-control" id="regFirstName" placeholder="Juan">
+            </div>
+            <div class="form-group">
+              <label>Last Name *</label>
+              <input class="form-control" id="regLastName" placeholder="dela Cruz">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Middle Name</label>
+              <input class="form-control" id="regMiddleName" placeholder="Santos">
+            </div>
+            <div class="form-group">
+              <label>Gender *</label>
+              <select class="form-control" id="regGender">
+                <option value="">Select gender</option>
+                <option>Male</option>
+                <option>Female</option>
+                <option>Non-binary</option>
+                <option>Prefer not to say</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Contact Number *</label>
+              <div class="input-icon">
+                <i class="fa-solid fa-phone"></i>
+                <input class="form-control" id="regContact" placeholder="+63 912 345 6789">
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Email Address *</label>
+              <div class="input-icon">
+                <i class="fa-solid fa-envelope"></i>
+                <input type="email" class="form-control" id="regEmail" placeholder="juan@email.com">
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Permanent Address *</label>
+            <input class="form-control" id="regAddress" placeholder="123 Rizal St, Quezon City">
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Password *</label>
+              <div style="position:relative">
+                <input type="password" class="form-control" id="regPassword" placeholder="••••••••" style="padding-right:44px">
+                <span class="pass-toggle" data-target="regPassword"><i class="fa-solid fa-eye"></i></span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Confirm Password *</label>
+              <div style="position:relative">
+                <input type="password" class="form-control" id="regConfirmPassword" placeholder="••••••••" style="padding-right:44px">
+                <span class="pass-toggle" data-target="regConfirmPassword"><i class="fa-solid fa-eye"></i></span>
+              </div>
+            </div>
+          </div>
+          <button class="btn btn-primary" style="width:100%;justify-content:center" onclick="nextStep(1)">
+            Continue <i class="fa-solid fa-arrow-right"></i>
+          </button>
+        </div>
+
+        <!-- STEP 2: EMPLOYMENT -->
+        <div class="step-content" id="stepContent2">
+          <div class="form-group">
+            <label>Type of Job *</label>
+            <select class="form-control" id="regJobType">
+              <option value="">Select job type</option>
+              <option>Employed (Regular)</option>
+              <option>Employed (Contractual)</option>
+              <option>Self-Employed</option>
+              <option>Freelancer</option>
+              <option>Business Owner</option>
+              <option>Government Employee</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Employer/Business Name</label>
+            <input class="form-control" id="regEmployer" placeholder="ABC Corporation">
+          </div>
+          <div class="form-group">
+            <label>Monthly Salary *</label>
+            <div class="input-icon">
+              <i class="fa-solid fa-peso-sign"></i>
+              <input type="number" class="form-control" id="regSalary" placeholder="25000">
+            </div>
+          </div>
+          <div style="display:flex;gap:12px">
+            <button class="btn btn-ghost" style="flex:1;justify-content:center" onclick="prevStep(2)">
+              <i class="fa-solid fa-arrow-left"></i> Back
+            </button>
+            <button class="btn btn-primary" style="flex:1;justify-content:center" onclick="nextStep(2)">
+              Continue <i class="fa-solid fa-arrow-right"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- STEP 3: DOCUMENTS -->
+        <div class="step-content" id="stepContent3">
+          <div class="form-group">
+            <label>Valid ID Type *</label>
+            <select class="form-control" id="regIdType">
+              <option value="">Select ID type</option>
+              <option>Philippine Passport</option>
+              <option>Driver's License</option>
+              <option>SSS ID</option>
+              <option>GSIS ID</option>
+              <option>PhilHealth ID</option>
+              <option>Voter's ID</option>
+              <option>Postal ID</option>
+              <option>National ID (PhilSys)</option>
+            </select>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Valid ID — Front *</label>
+              <div class="file-upload-zone" id="idFrontZone">
+                <input type="file" accept="image/*" onchange="handleFileUpload(this,'idFrontZone','idFrontFile')">
+                <i class="fa-solid fa-id-card"></i>
+                <p>Click to upload front of ID</p>
+              </div>
+              <input type="hidden" id="idFrontFile">
+            </div>
+            <div class="form-group">
+              <label>Valid ID — Back *</label>
+              <div class="file-upload-zone" id="idBackZone">
+                <input type="file" accept="image/*" onchange="handleFileUpload(this,'idBackZone','idBackFile')">
+                <i class="fa-solid fa-id-card-clip"></i>
+                <p>Click to upload back of ID</p>
+              </div>
+              <input type="hidden" id="idBackFile">
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Latest Payslip *</label>
+            <div class="file-upload-zone" id="payslipZone">
+              <input type="file" accept="image/*,application/pdf" onchange="handleFileUpload(this,'payslipZone','payslipFile')">
+              <i class="fa-solid fa-file-invoice-dollar"></i>
+              <p>Click to upload payslip (image or PDF)</p>
+            </div>
+            <input type="hidden" id="payslipFile">
+          </div>
+          <div style="display:flex;gap:12px">
+            <button class="btn btn-ghost" style="flex:1;justify-content:center" onclick="prevStep(3)">
+              <i class="fa-solid fa-arrow-left"></i> Back
+            </button>
+            <button class="btn btn-primary" style="flex:1;justify-content:center" id="sendOtpBtn" onclick="submitRegistration()">
+              <i class="fa-solid fa-paper-plane"></i> Submit Application
+            </button>
+          </div>
+        </div>
+
+        <!-- STEP 4: EMAIL VERIFY -->
+        <div class="step-content" id="stepContent4">
+          <div style="text-align:center;margin-bottom:24px">
+            <div style="width:60px;height:60px;border-radius:50%;background:rgba(0,212,255,.1);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:1.6rem;color:var(--neon);margin:0 auto 16px">
+              <i class="fa-solid fa-envelope-circle-check"></i>
+            </div>
+            <h4 style="margin-bottom:8px">Verify Your Email</h4>
+            <p style="font-size:.85rem;color:var(--text-secondary)">A verification email was sent to<br><strong id="otpEmailDisplay" style="color:var(--neon)"></strong></p>
+            <p style="font-size:.82rem;color:var(--text-muted);margin-top:8px">Click the link in your inbox and then confirm below.</p>
+          </div>
+          <button class="btn btn-primary" style="width:100%;justify-content:center;margin-bottom:12px" id="verifyOtpBtn" onclick="verifyEmailAndRegister()">
+            <i class="fa-solid fa-circle-check"></i> Confirm verification and create account
+          </button>
+          <div style="display:flex;gap:12px;margin-top:12px">
+            <button class="btn btn-ghost" style="flex:1;justify-content:center" onclick="prevStep(4)">
+              <i class="fa-solid fa-arrow-left"></i> Back
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════
+     ADMIN DASHBOARD
+══════════════════════════════════════════════════════════════════ -->
+<div class="page" id="adminDash">
+  <div class="dash-layout">
+    <aside class="sidebar" id="adminSidebar">
+      <div class="sidebar-header">
+        <div class="logo">
+          <img class="logo-img" src="/loanapp/assets/logo-Bp6-olO-.png" alt="DS Personal Loan logo">
+          <span class="neon-text">DS Personal Loan</span>
+          <span class="logo-tagline">Your Trusted Financial Backup</span>
+        </div>
+        <div style="font-size:.7rem;color:var(--text-muted);margin-top:4px">Admin Panel</div>
+      </div>
+      <nav class="sidebar-nav">
+        <div class="sidebar-section-title">Overview</div>
+        <a href="#" class="active" onclick="adminView('dashboard',this)"><i class="fa-solid fa-gauge"></i> Dashboard</a>
+        <div class="sidebar-section-title">Management</div>
+        <a href="#" onclick="adminView('users',this)"><i class="fa-solid fa-users"></i> User Management</a>
+        <a href="#" onclick="adminView('loans',this)"><i class="fa-solid fa-file-invoice-dollar"></i> Loan Requests</a>
+        <a href="#" onclick="adminView('active',this)"><i class="fa-solid fa-circle-dot"></i> Active Loans</a>
+        <a href="#" onclick="adminView('overdue',this)"><i class="fa-solid fa-triangle-exclamation"></i> Overdue Loans</a>
+      </nav>
+      <div class="sidebar-footer">
+        <div class="sidebar-user">
+          <div class="user-avatar">A</div>
+          <div class="user-info">
+            <strong>Admin</strong>
+            <small>davenstarr@gmail.com</small>
+          </div>
+        </div>
+        <button class="btn btn-ghost btn-sm" style="width:100%;justify-content:center;margin-top:14px" onclick="handleLogout()">
+          <i class="fa-solid fa-right-from-bracket"></i> Logout
+        </button>
+      </div>
+    </aside>
+
+    <main class="dash-main">
+      <div class="dash-topbar">
+        <h2 id="adminTopTitle">Dashboard</h2>
+        <div class="topbar-right">
+          <div class="search-bar" style="width:220px">
+            <i class="fa-solid fa-search"></i>
+            <input placeholder="Search..." id="adminSearch" oninput="filterAdminTable()">
+          </div>
+          <div class="notif-btn" onclick="toggleNotifPanel('adminNotif')">
+            <i class="fa-solid fa-bell"></i>
+            <span class="notif-dot" id="adminNotifDot"></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- NOTIFICATION PANEL -->
+      <div class="notif-panel" id="adminNotif">
+        <div class="notif-header">
+          <strong style="font-size:.9rem">Notifications</strong>
+          <button onclick="closeNotif('adminNotif')" style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:.85rem">Mark all read</button>
+        </div>
+        <div id="adminNotifList"></div>
+      </div>
+
+      <div class="dash-content">
+        <!-- ADMIN DASHBOARD VIEW -->
+        <div id="adminView-dashboard">
+          <div class="stats-grid" id="adminStatsGrid">
+            <div class="glass stat-card">
+              <div class="stat-icon blue"><i class="fa-solid fa-users"></i></div>
+              <div class="stat-value" id="stat-total">0</div>
+              <div class="stat-label">Total Users</div>
+            </div>
+            <div class="glass stat-card">
+              <div class="stat-icon green"><i class="fa-solid fa-user-check"></i></div>
+              <div class="stat-value" id="stat-approved">0</div>
+              <div class="stat-label">Approved Users</div>
+            </div>
+            <div class="glass stat-card">
+              <div class="stat-icon red"><i class="fa-solid fa-user-xmark"></i></div>
+              <div class="stat-value" id="stat-declined">0</div>
+              <div class="stat-label">Declined Users</div>
+            </div>
+            <div class="glass stat-card">
+              <div class="stat-icon yellow"><i class="fa-solid fa-clock"></i></div>
+              <div class="stat-value" id="stat-pending">0</div>
+              <div class="stat-label">Pending Approval</div>
+            </div>
+            <div class="glass stat-card">
+              <div class="stat-icon cyan"><i class="fa-solid fa-file-invoice-dollar"></i></div>
+              <div class="stat-value" id="stat-loanreqs">0</div>
+              <div class="stat-label">Loan Requests</div>
+            </div>
+          </div>
+
+          <div class="grid-2">
+            <div class="glass chart-wrapper">
+              <div class="section-header">
+                <h3>User Overview</h3>
+                <span class="badge badge-info">Chart</span>
+              </div>
+              <canvas id="adminChart"></canvas>
+            </div>
+            <div class="glass chart-wrapper">
+              <div class="section-header">
+                <h3>Loan Status</h3>
+                <span class="badge badge-info">Chart</span>
+              </div>
+              <canvas id="loanChart"></canvas>
+            </div>
+          </div>
+
+          <div class="glass" style="margin-top:20px">
+            <div style="padding:20px 24px;border-bottom:1px solid var(--border-soft)">
+              <div class="section-header" style="margin:0">
+                <h3>Recent Loan Requests</h3>
+                <button class="btn btn-ghost btn-xs" onclick="adminView('loans',null)">View All</button>
+              </div>
+            </div>
+            <div class="table-wrap" style="border:none;border-radius:0">
+              <table id="recentLoansTable">
+                <thead><tr>
+                  <th>Borrower</th><th>Amount</th><th>Date</th><th>Status</th><th>Actions</th>
+                </tr></thead>
+                <tbody id="recentLoansBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- ADMIN USERS VIEW -->
+        <div id="adminView-users" style="display:none">
+          <div class="section-header" style="margin-bottom:20px">
+            <h3>User Management</h3>
+            <div class="badge badge-info" id="userCountBadge">0 Users</div>
+          </div>
+          <div class="glass">
+            <div class="table-wrap" style="border:none;border-radius:0">
+              <table>
+                <thead><tr>
+                  <th>Name</th><th>Email</th><th>Contact</th><th>Job</th><th>Salary</th><th>Status</th><th>Actions</th>
+                </tr></thead>
+                <tbody id="adminUsersBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- ADMIN LOANS VIEW -->
+        <div id="adminView-loans" style="display:none">
+          <div class="section-header" style="margin-bottom:20px">
+            <h3>Loan Requests</h3>
+          </div>
+          <div class="glass">
+            <div class="table-wrap" style="border:none;border-radius:0">
+              <table>
+                <thead><tr>
+                  <th>Borrower</th><th>Amount</th><th>Interest</th><th>Total Payable</th><th>Requested</th><th>Status</th><th>Actions</th>
+                </tr></thead>
+                <tbody id="adminLoansBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- ADMIN ACTIVE LOANS VIEW -->
+        <div id="adminView-active" style="display:none">
+          <div class="section-header" style="margin-bottom:20px">
+            <h3>Active Loans</h3>
+          </div>
+          <div class="glass">
+            <div class="table-wrap" style="border:none;border-radius:0">
+              <table>
+                <thead><tr>
+                  <th>Borrower</th><th>Principal</th><th>Interest</th><th>Total</th><th>Due Date</th><th>Status</th>
+                </tr></thead>
+                <tbody id="adminActiveBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- ADMIN OVERDUE VIEW -->
+        <div id="adminView-overdue" style="display:none">
+          <div class="section-header" style="margin-bottom:20px">
+            <h3>Overdue Loans</h3>
+          </div>
+          <div class="glass">
+            <div class="table-wrap" style="border:none;border-radius:0">
+              <table>
+                <thead><tr>
+                  <th>Borrower</th><th>Principal</th><th>Interest</th><th>Penalty</th><th>Total Due</th><th>Overdue By</th>
+                </tr></thead>
+                <tbody id="adminOverdueBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+  <button class="mobile-toggle" onclick="toggleSidebar('adminSidebar')">
+    <i class="fa-solid fa-bars"></i>
+  </button>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════
+     USER DASHBOARD
+══════════════════════════════════════════════════════════════════ -->
+<div class="page" id="userDash">
+  <div class="dash-layout">
+    <aside class="sidebar" id="userSidebar">
+      <div class="sidebar-header">
+        <div class="logo">
+          <img class="logo-img" src="/loanapp/assets/logo-Bp6-olO-.png" alt="DS Personal Loan logo">
+          <span class="neon-text">DS Personal Loan</span>
+          <span class="logo-tagline">Your Trusted Financial Backup</span>
+        </div>
+      </div>
+        <a href="#" class="active" onclick="userView('overview',this)"><i class="fa-solid fa-gauge"></i> Overview</a>
+        <div class="sidebar-section-title">Loans</div>
+        <a href="#" onclick="userView('request',this)"><i class="fa-solid fa-plus-circle"></i> Request Loan</a>
+        <a href="#" onclick="userView('disbursed',this)"><i class="fa-solid fa-money-bill-transfer"></i> Disbursed Loans</a>
+        <a href="#" onclick="userView('active',this)"><i class="fa-solid fa-circle-dot"></i> Active Loans</a>
+        <a href="#" onclick="userView('overdue',this)"><i class="fa-solid fa-triangle-exclamation"></i> Overdue Loans</a>
+        <a href="#" onclick="userView('repayment',this)"><i class="fa-solid fa-receipt"></i> Repayments</a>
+      </nav>
+      <div class="sidebar-footer">
+        <div class="sidebar-user">
+          <div class="user-avatar" id="userAvatarInitial">U</div>
+          <div class="user-info">
+            <strong id="sidebarUserName">User</strong>
+            <small id="sidebarUserEmail">user@email.com</small>
+          </div>
+        </div>
+        <button class="btn btn-ghost btn-sm" style="width:100%;justify-content:center;margin-top:14px" onclick="handleLogout()">
+          <i class="fa-solid fa-right-from-bracket"></i> Logout
+        </button>
+      </div>
+    </aside>
+
+    <main class="dash-main">
+      <div class="dash-topbar">
+        <h2 id="userTopTitle">Overview</h2>
+        <div class="topbar-right">
+          <div class="notif-btn" onclick="toggleNotifPanel('userNotif')">
+            <i class="fa-solid fa-bell"></i>
+            <span class="notif-dot" id="userNotifDot"></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="notif-panel" id="userNotif">
+        <div class="notif-header">
+          <strong style="font-size:.9rem">Notifications</strong>
+          <button onclick="closeNotif('userNotif')" style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:.85rem">Clear</button>
+        </div>
+        <div id="userNotifList"></div>
+      </div>
+
+      <div class="dash-content">
+        <!-- USER OVERVIEW -->
+        <div id="userView-overview">
+          <!-- Account status warning -->
+          <div class="alert alert-info" id="pendingApprovalAlert" style="display:none;margin-bottom:20px">
+            <i class="fa-solid fa-clock"></i>
+            <span>Your account is pending admin approval. You'll be notified once approved.</span>
+          </div>
+
+          <div class="stats-grid" style="grid-template-columns:repeat(auto-fit,minmax(160px,1fr))">
+            <div class="glass stat-card">
+              <div class="stat-icon cyan"><i class="fa-solid fa-wallet"></i></div>
+              <div class="stat-value neon-text" style="font-size:1.5rem">₱15,000</div>
+              <div class="stat-label">Total Limit</div>
+            </div>
+            <div class="glass stat-card">
+              <div class="stat-icon red"><i class="fa-solid fa-arrow-up-from-bracket"></i></div>
+              <div class="stat-value" id="usedLimit" style="font-size:1.5rem;color:var(--danger)">₱0</div>
+              <div class="stat-label">Used Limit</div>
+            </div>
+            <div class="glass stat-card">
+              <div class="stat-icon green"><i class="fa-solid fa-coins"></i></div>
+              <div class="stat-value" id="remainLimit" style="font-size:1.5rem;color:var(--success)">₱15,000</div>
+              <div class="stat-label">Remaining</div>
+            </div>
+            <div class="glass stat-card">
+              <div class="stat-icon yellow"><i class="fa-solid fa-file-lines"></i></div>
+              <div class="stat-value" id="totalLoansCount" style="font-size:1.5rem;color:var(--warning)">0</div>
+              <div class="stat-label">Total Loans</div>
+            </div>
+          </div>
+
+          <div class="grid-2" style="margin-top:0">
+            <div class="glass">
+              <div style="padding:20px 24px;border-bottom:1px solid var(--border-soft)">
+                <h3 style="font-size:1rem">Credit Utilization</h3>
+              </div>
+              <div class="limit-ring-wrap">
+                <div class="limit-ring">
+                  <canvas id="limitDoughnut"></canvas>
+                  <div class="limit-center">
+                    <span>Used</span>
+                    <strong id="limitPct">0%</strong>
+                  </div>
+                </div>
+                <div class="limit-details" style="flex:1;width:100%">
+                  <div class="limit-row">
+                    <span>Total Limit</span>
+                    <strong>₱15,000</strong>
+                  </div>
+                  <div class="limit-row">
+                    <span>Used</span>
+                    <strong id="limitUsedDetail" style="color:var(--danger)">₱0</strong>
+                  </div>
+                  <div class="limit-row">
+                    <span>Available</span>
+                    <strong id="limitAvailDetail" style="color:var(--success)">₱15,000</strong>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="glass">
+              <div style="padding:20px 24px;border-bottom:1px solid var(--border-soft)">
+                <div class="section-header" style="margin:0">
+                  <h3 style="font-size:1rem">My Loans</h3>
+                  <button class="btn btn-primary btn-xs" onclick="userView('request',null)">+ Request</button>
+                </div>
+              </div>
+              <div class="table-wrap" style="border:none;border-radius:0">
+                <table>
+                  <thead><tr><th>Amount</th><th>Total</th><th>Due</th><th>Status</th></tr></thead>
+                  <tbody id="userLoansBody"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- USER REQUEST LOAN -->
+        <div id="userView-request" style="display:none">
+          <div style="max-width:560px">
+            <div class="glass" style="padding:32px">
+              <h3 style="margin-bottom:6px;font-size:1.1rem">Request a Loan</h3>
+              <p style="font-size:.83rem;color:var(--text-muted);margin-bottom:24px">Fill in the details below to submit a loan request</p>
+
+              <div class="alert alert-error" id="loanReqError" style="display:none">
+                <i class="fa-solid fa-circle-exclamation"></i>
+                <span id="loanReqErrorMsg"></span>
+              </div>
+
+              <div class="form-group">
+                <label>Loan Amount (₱) *</label>
+                <div class="input-icon">
+                  <i class="fa-solid fa-peso-sign"></i>
+                  <input type="number" class="form-control" id="loanAmount" placeholder="5000" min="500" max="15000" oninput="calcLoanPreview()">
+                </div>
+                <div style="display:flex;justify-content:space-between;margin-top:6px">
+                  <span style="font-size:.72rem;color:var(--text-muted)">Min: ₱500</span>
+                  <span style="font-size:.72rem;color:var(--text-muted)">Max: <span id="maxLoanDisplay">₱15,000</span></span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label>Purpose / Notes</label>
+                <textarea class="form-control" id="loanPurpose" rows="3" placeholder="Briefly describe the purpose of this loan..."></textarea>
+              </div>
+
+              <!-- LOAN PREVIEW -->
+              <div class="glass2" style="padding:18px;margin-bottom:20px" id="loanPreview">
+                <div style="font-size:.78rem;color:var(--text-muted);margin-bottom:12px;font-weight:600;text-transform:uppercase;letter-spacing:.08em">Loan Summary</div>
+                <div class="limit-row" style="padding:8px 0;border-color:var(--border-soft)">
+                  <span>Principal</span><strong id="prev-principal">₱0</strong>
+                </div>
+                <div class="limit-row" style="padding:8px 0;border-color:var(--border-soft)">
+                  <span>Interest (20%/mo)</span><strong id="prev-interest" style="color:var(--warning)">₱0</strong>
+                </div>
+                <div class="limit-row" style="padding:8px 0;border-color:var(--neon);border-width:1.5px">
+                  <span style="font-weight:600">Total Payable</span>
+                  <strong id="prev-total" style="font-size:1.1rem;color:var(--neon)">₱0</strong>
+                </div>
+              </div>
+
+              <button class="btn btn-primary" style="width:100%;justify-content:center" id="submitLoanBtn" onclick="submitLoanRequest()">
+                <i class="fa-solid fa-paper-plane"></i> Submit Loan Request
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- USER DISBURSED -->
+        <div id="userView-disbursed" style="display:none">
+          <div class="section-header" style="margin-bottom:20px">
+            <h3>Disbursed Loans</h3>
+          </div>
+          <div class="glass">
+            <div class="table-wrap" style="border:none;border-radius:0">
+              <table>
+                <thead><tr><th>Amount</th><th>Interest</th><th>Total</th><th>Disbursed</th><th>Due</th><th>Status</th></tr></thead>
+                <tbody id="disbursedBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- USER ACTIVE LOANS -->
+        <div id="userView-active" style="display:none">
+          <div class="section-header" style="margin-bottom:20px">
+            <h3>Active Loans</h3>
+          </div>
+          <div class="glass">
+            <div class="table-wrap" style="border:none;border-radius:0">
+              <table>
+                <thead><tr><th>Amount</th><th>Interest</th><th>Total</th><th>Due Date</th><th>Actions</th></tr></thead>
+                <tbody id="activeBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- USER OVERDUE LOANS -->
+        <div id="userView-overdue" style="display:none">
+          <div class="section-header" style="margin-bottom:20px">
+            <h3>Overdue Loans</h3>
+          </div>
+          <div class="glass">
+            <div class="table-wrap" style="border:none;border-radius:0">
+              <table>
+                <thead><tr><th>Amount</th><th>Interest</th><th>Penalty (5%)</th><th>Total Due</th><th>Overdue</th><th>Actions</th></tr></thead>
+                <tbody id="overdueBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- USER REPAYMENT -->
+        <div id="userView-repayment" style="display:none">
+          <div class="section-header" style="margin-bottom:20px">
+            <h3>Repayment History</h3>
+          </div>
+          <div class="glass">
+            <div class="table-wrap" style="border:none;border-radius:0">
+              <table>
+                <thead><tr><th>Loan Ref</th><th>Amount Paid</th><th>Payment Date</th><th>Method</th><th>Status</th></tr></thead>
+                <tbody id="repaymentBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+  <button class="mobile-toggle" onclick="toggleSidebar('userSidebar')">
+    <i class="fa-solid fa-bars"></i>
+  </button>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════
+     USER DETAILS MODAL (Admin)
+══════════════════════════════════════════════════════════════════ -->
+<div class="modal-overlay" id="userDetailModal">
+  <div class="modal-box modal-lg">
+    <button class="modal-close" onclick="closeModal('userDetailModal')"><i class="fa-solid fa-xmark"></i></button>
+    <h3 style="margin-bottom:20px;font-size:1.1rem" id="modalUserTitle">User Details</h3>
+    <div id="modalUserContent"></div>
+  </div>
+</div>
+
+<!-- REPAY MODAL -->
+<div class="modal-overlay" id="repayModal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('repayModal')"><i class="fa-solid fa-xmark"></i></button>
+    <h3 style="margin-bottom:20px;font-size:1.1rem">Make a Repayment</h3>
+    <div id="repayModalContent">
+      <div class="form-group">
+        <label>Amount to Pay (₱)</label>
+        <input type="number" class="form-control" id="repayAmount" placeholder="0.00">
+      </div>
+      <div class="form-group">
+        <label>Payment Method</label>
+        <select class="form-control" id="repayMethod">
+          <option>GCash</option>
+          <option>Maya</option>
+          <option>Bank Transfer</option>
+          <option>Cash</option>
+        </select>
+      </div>
+      <button class="btn btn-primary" style="width:100%;justify-content:center" onclick="submitRepayment()">
+        <i class="fa-solid fa-check"></i> Confirm Payment
+      </button>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
