@@ -308,6 +308,7 @@
   <div class="auth-page">
     <div class="auth-container">
       <div class="glass auth-box">
+
         <div class="auth-logo">
           <div class="logo">
             <img class="logo-img" src="image/logo.png" alt="DS Personal Loan logo">
@@ -315,8 +316,6 @@
             <span class="logo-tagline">Your Trusted Financial Backup</span>
           </div>
         </div>
-        <h2 class="auth-title">Welcome Back</h2>
-        <p class="auth-sub">Sign in to your account</p>
 
         <div class="alert alert-error" id="loginError">
           <i class="fa-solid fa-circle-exclamation"></i>
@@ -354,6 +353,7 @@
         <div style="text-align:center;margin-top:12px">
           <a href="#" onclick="showPage('landing')" style="font-size:.8rem;color:var(--text-muted)">← Back to Home</a>
         </div>
+
       </div>
     </div>
   </div>
@@ -601,12 +601,10 @@
         </button>
       </div>
       <nav class="sidebar-nav">
-        <div class="sidebar-section-title">Overview</div>
         <a href="#" class="active" onclick="adminView('dashboard',this)">
           <span class="nav-icon"><i class="fa-solid fa-gauge"></i></span>
           <span class="nav-label">Dashboard</span>
         </a>
-        <div class="sidebar-section-title">Management</div>
         <a href="#" onclick="adminView('users',this)">
           <span class="nav-icon"><i class="fa-solid fa-users"></i></span>
           <span class="nav-label">User Management</span>
@@ -622,6 +620,14 @@
         <a href="#" onclick="adminView('overdue',this)">
           <span class="nav-icon"><i class="fa-solid fa-triangle-exclamation"></i></span>
           <span class="nav-label">Overdue Loans</span>
+        </a>
+        <a href="#" onclick="adminView('repayments',this)">
+          <span class="nav-icon"><i class="fa-solid fa-receipt"></i></span>
+          <span class="nav-label">Repayments</span>
+        </a>
+        <a href="#" onclick="adminView('settings',this)">
+          <span class="nav-icon"><i class="fa-solid fa-gear"></i></span>
+          <span class="nav-label">Payment Settings</span>
         </a>
       </nav>
       <div class="sidebar-footer">
@@ -639,6 +645,7 @@
       </div>
     </aside>
 
+    <div class="sidebar-overlay" id="adminOverlay" onclick="toggleSidebar('adminSidebar')"></div>
     <main class="dash-main">
       <div class="dash-topbar">
         <div style="display:flex;align-items:center;gap:12px">
@@ -744,7 +751,13 @@
             <div class="table-wrap" style="border:none;border-radius:0">
               <table>
                 <thead><tr>
-                  <th>Name</th><th>Email</th><th>Contact</th><th>Job</th><th>Salary</th><th>Status</th><th>Actions</th>
+                  <th>Name</th>
+                  <th class="hide-mobile">Email</th>
+                  <th class="hide-mobile">Contact</th>
+                  <th class="hide-tablet">Job</th>
+                  <th class="hide-tablet">Salary</th>
+                  <th>Status</th>
+                  <th>Actions</th>
                 </tr></thead>
                 <tbody id="adminUsersBody"></tbody>
               </table>
@@ -802,6 +815,57 @@
             </div>
           </div>
         </div>
+
+        <!-- ADMIN REPAYMENTS VIEW -->
+        <div id="adminView-repayments" style="display:none">
+          <div class="section-header" style="margin-bottom:20px">
+            <h3>Repayment Submissions</h3>
+          </div>
+          <div class="glass">
+            <div class="table-wrap" style="border:none;border-radius:0">
+              <table>
+                <thead><tr>
+                  <th>Borrower</th><th>Amount</th><th>Method</th><th>Reference #</th><th>Date</th><th>Proof</th><th>Status</th><th>Action</th>
+                </tr></thead>
+                <tbody id="adminRepaymentsBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- ADMIN PAYMENT SETTINGS -->
+        <div id="adminView-settings" style="display:none">
+          <div class="section-header" style="margin-bottom:20px">
+            <h3>Payment Settings</h3>
+          </div>
+          <div class="glass" style="padding:28px;max-width:560px">
+            <p style="font-size:.85rem;color:var(--text-muted);margin-bottom:24px">These details will be shown to borrowers when they make a repayment.</p>
+            <div class="form-group">
+              <label>GCash Number</label>
+              <input class="form-control" id="set-gcash-number" placeholder="09XX XXX XXXX">
+            </div>
+            <div class="form-group">
+              <label>GCash Account Name</label>
+              <input class="form-control" id="set-gcash-name" placeholder="Full Name">
+            </div>
+            <div class="form-group">
+              <label>Bank Name</label>
+              <input class="form-control" id="set-bank-name" placeholder="e.g. BDO, BPI">
+            </div>
+            <div class="form-group">
+              <label>Bank Account Number</label>
+              <input class="form-control" id="set-bank-account" placeholder="1234 5678 9012">
+            </div>
+            <div class="form-group">
+              <label>Bank Account Name</label>
+              <input class="form-control" id="set-bank-account-name" placeholder="Full Name">
+            </div>
+            <button class="btn btn-primary" onclick="savePaymentSettings()">
+              <i class="fa-solid fa-floppy-disk"></i> Save Settings
+            </button>
+          </div>
+        </div>
+
       </div>
     </main>
   </div>
@@ -825,12 +889,10 @@
         </button>
       </div>
       <nav class="sidebar-nav">
-        <div class="sidebar-section-title">Main</div>
         <a href="#" class="active" onclick="userView('overview',this)">
           <span class="nav-icon"><i class="fa-solid fa-gauge"></i></span>
           <span class="nav-label">Overview</span>
         </a>
-        <div class="sidebar-section-title">Loans</div>
         <a href="#" onclick="userView('request',this)">
           <span class="nav-icon"><i class="fa-solid fa-plus-circle"></i></span>
           <span class="nav-label">Request Loan</span>
@@ -867,6 +929,7 @@
       </div>
     </aside>
 
+    <div class="sidebar-overlay" id="userOverlay" onclick="toggleSidebar('userSidebar')"></div>
     <main class="dash-main">
       <div class="dash-topbar">
         <div style="display:flex;align-items:center;gap:12px">
@@ -1118,7 +1181,7 @@
           <div class="glass">
             <div class="table-wrap" style="border:none;border-radius:0">
               <table>
-                <thead><tr><th>Loan Ref</th><th>Amount Paid</th><th>Payment Date</th><th>Method</th><th>Status</th></tr></thead>
+                <thead><tr><th>Loan Ref</th><th>Amount</th><th>Date</th><th>Method</th><th>Reference #</th><th>Proof</th><th>Status</th></tr></thead>
                 <tbody id="repaymentBody"></tbody>
               </table>
             </div>
@@ -1145,23 +1208,70 @@
 <div class="modal-overlay" id="repayModal">
   <div class="modal-box">
     <button class="modal-close" onclick="closeModal('repayModal')"><i class="fa-solid fa-xmark"></i></button>
-    <h3 style="margin-bottom:20px;font-size:1.1rem">Make a Repayment</h3>
+    <h3 style="margin-bottom:4px;font-size:1.1rem">Make a Repayment</h3>
+    <p style="font-size:.82rem;color:var(--text-muted);margin-bottom:20px">Send payment to the details below then upload your proof.</p>
+
+    <!-- ADMIN PAYMENT DETAILS -->
+    <div id="adminPaymentDetails" class="glass2" style="padding:16px;margin-bottom:20px;border:1px solid rgba(0,212,255,.2)">
+      <div style="font-size:.72rem;color:var(--neon);font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px">
+        <i class="fa-solid fa-circle-info"></i> Send Payment To
+      </div>
+      <div style="display:grid;gap:8px" id="paymentDetailsContent">
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:rgba(0,212,255,.06);border-radius:8px">
+          <span style="font-size:.8rem;color:var(--text-muted)"><i class="fa-solid fa-mobile-screen" style="color:#00d4ff;margin-right:6px"></i>GCash</span>
+          <div style="text-align:right">
+            <div style="font-weight:700;font-size:.9rem" id="pd-gcash-number">Loading...</div>
+            <div style="font-size:.75rem;color:var(--text-muted)" id="pd-gcash-name"></div>
+          </div>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:rgba(0,212,255,.06);border-radius:8px">
+          <span style="font-size:.8rem;color:var(--text-muted)"><i class="fa-solid fa-building-columns" style="color:#0090ff;margin-right:6px"></i><span id="pd-bank-name">Bank</span></span>
+          <div style="text-align:right">
+            <div style="font-weight:700;font-size:.9rem" id="pd-bank-account">Loading...</div>
+            <div style="font-size:.75rem;color:var(--text-muted)" id="pd-bank-account-name"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div id="repayModalContent">
       <div class="form-group">
         <label>Amount to Pay (₱)</label>
-        <input type="number" class="form-control" id="repayAmount" placeholder="0.00">
+        <input type="number" class="form-control" id="repayAmount" placeholder="0.00" readonly style="background:rgba(0,212,255,.06);font-weight:700;color:var(--neon)">
       </div>
       <div class="form-group">
-        <label>Payment Method</label>
+        <label>Payment Method *</label>
         <select class="form-control" id="repayMethod">
+          <option value="">Select payment method</option>
           <option>GCash</option>
           <option>Maya</option>
-          <option>Bank Transfer</option>
-          <option>Cash</option>
+          <option>BDO</option>
+          <option>BPI</option>
+          <option>Metrobank</option>
+          <option>UnionBank</option>
+          <option>Other Bank Transfer</option>
         </select>
       </div>
+      <div class="form-group">
+        <label>Reference Number *</label>
+        <input class="form-control" id="repayReference" placeholder="e.g. 1234567890">
+        <div style="font-size:.75rem;color:var(--text-muted);margin-top:4px">GCash/bank transaction reference number</div>
+      </div>
+      <div class="form-group">
+        <label>Payment Proof (Screenshot) *</label>
+        <div class="file-upload-zone" id="proofZone">
+          <input type="file" accept="image/*" onchange="handleProofUpload(this)">
+          <i class="fa-solid fa-camera"></i>
+          <p>Click to upload screenshot of payment</p>
+        </div>
+        <input type="hidden" id="proofFile">
+      </div>
+      <div class="alert alert-error" id="repayError" style="display:none">
+        <i class="fa-solid fa-circle-exclamation"></i>
+        <span id="repayErrorMsg"></span>
+      </div>
       <button class="btn btn-primary" style="width:100%;justify-content:center" onclick="submitRepayment()">
-        <i class="fa-solid fa-check"></i> Confirm Payment
+        <i class="fa-solid fa-paper-plane"></i> Submit Payment
       </button>
     </div>
   </div>

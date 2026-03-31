@@ -65,16 +65,19 @@ function addDays(date,days){ const d=new Date(date); d.setDate(d.getDate()+days)
 
 function showAlert(id,msg){ const el=document.getElementById(id); el.classList.add('show'); if(msg) el.querySelector('span').textContent=msg; }
 function hideAlert(id){ document.getElementById(id)?.classList.remove('show'); }
-function toggleSidebar(id){ document.getElementById(id).classList.toggle('open'); }
+function toggleSidebar(id){
+  const sidebar = document.getElementById(id);
+  sidebar.classList.toggle('open');
+  // Toggle overlay
+  const overlayId = id === 'adminSidebar' ? 'adminOverlay' : 'userOverlay';
+  const overlay = document.getElementById(overlayId);
+  if(overlay) overlay.classList.toggle('show', sidebar.classList.contains('open'));
+}
 
 function toggleCollapse(id){
   const sidebar = document.getElementById(id);
   sidebar.classList.toggle('collapsed');
-  // Manually update dash-main margin since ~ CSS selector needs direct sibling
-  const main = sidebar.nextElementSibling;
-  if(main && main.classList.contains('dash-main')){
-    main.style.marginLeft = sidebar.classList.contains('collapsed') ? '72px' : '';
-  }
+  fixDashLayout();
 }function openModal(id){ document.getElementById(id).classList.add('open'); }
 function closeModal(id){ document.getElementById(id).classList.remove('open'); }
 function toggleNotifPanel(id){
@@ -210,6 +213,7 @@ async function handleLogin() {
   if(profile.role==='admin'){
     showPage('adminDash');
     await loadAdminDashboard();
+    fixDashLayout();
     toast(`Welcome back, ${profile.first_name}!`,'success');
   } else {
     afterUserLogin(profile);
@@ -223,6 +227,7 @@ function afterUserLogin(user){
   document.getElementById('userAvatarInitial').textContent=(user.first_name||'U')[0].toUpperCase();
   document.getElementById('pendingApprovalAlert').style.display='none';
   showPage('userDash');
+  fixDashLayout();
   toast(`Welcome back, ${user.first_name}!`,'success');
 }
 
@@ -235,6 +240,18 @@ function handleLogout(){
 function guardDashboard(){
   const active=document.querySelector('.page.active')?.id;
   if((active==='userDash'||active==='adminDash')&&!currentUser) showPage('login');
+}
+
+function fixDashLayout(){
+  // Force correct margin on all dash-main elements
+  document.querySelectorAll('.dash-main').forEach(main => {
+    const sidebar = main.previousElementSibling;
+    if(sidebar && sidebar.classList.contains('sidebar')){
+      const w = sidebar.classList.contains('collapsed') ? '72px' : '240px';
+      main.style.marginLeft = w;
+      main.style.width = `calc(100% - ${w})`;
+    }
+  });
 }
 
 // ─── REGISTER ─────────────────────────────────────────────────────────
@@ -302,8 +319,30 @@ async function submitRegistration(){
   const { data: existing }=await db.from('users').select('id').eq('email',email).maybeSingle();
   if(existing){ showAlert('regError','An account with this email already exists.'); btn.disabled=false; btn.innerHTML='<i class="fa-solid fa-paper-plane"></i> Submit Application'; return; }
 
+  // Upload files to Supabase Storage
+  const userId = uid();
+  let idFrontUrl='', idBackUrl='', payslipUrl='';
+
+  const idFrontInput = document.querySelector('#idFrontZone input[type=file]');
+  const idBackInput  = document.querySelector('#idBackZone input[type=file]');
+  const payslipInput = document.querySelector('#payslipZone input[type=file]');
+
+  async function uploadFile(file, path){
+    if(!file) return '';
+    const { data, error } = await db.storage.from('user-documents').upload(path, file, {upsert:true});
+    if(error){ console.warn('Upload error:', error); return ''; }
+    return db.storage.from('user-documents').getPublicUrl(path).data.publicUrl;
+  }
+
+  btn.innerHTML='<div class="spinner"></div> Uploading documents...';
+  if(idFrontInput?.files[0]) idFrontUrl = await uploadFile(idFrontInput.files[0], `${userId}/id-front`);
+  if(idBackInput?.files[0])  idBackUrl  = await uploadFile(idBackInput.files[0],  `${userId}/id-back`);
+  if(payslipInput?.files[0]) payslipUrl = await uploadFile(payslipInput.files[0], `${userId}/payslip`);
+
+  btn.innerHTML='<div class="spinner"></div> Saving profile...';
+
   const newUser={
-    id: uid(),
+    id: userId,
     first_name: document.getElementById('regFirstName').value.trim(),
     last_name:  document.getElementById('regLastName').value.trim(),
     middle_name:document.getElementById('regMiddleName').value.trim(),
@@ -316,6 +355,9 @@ async function submitRegistration(){
     employer:   document.getElementById('regEmployer').value.trim(),
     salary:     document.getElementById('regSalary').value,
     id_type:    document.getElementById('regIdType').value,
+    id_front_url: idFrontUrl,
+    id_back_url:  idBackUrl,
+    payslip_url:  payslipUrl,
     status:     'pending',
     role:       'user',
     created_at: new Date().toISOString()
@@ -333,18 +375,20 @@ async function submitRegistration(){
 
 // ─── ADMIN DASHBOARD ──────────────────────────────────────────────────
 function adminView(view,el){
-  ['dashboard','users','loans','active','overdue'].forEach(v=>{
+  ['dashboard','users','loans','active','overdue','repayments','settings'].forEach(v=>{
     const vEl=document.getElementById(`adminView-${v}`);
     if(vEl) vEl.style.display=v===view?'block':'none';
   });
   document.querySelectorAll('#adminSidebar .sidebar-nav a').forEach(a=>a.classList.remove('active'));
   if(el) el.classList.add('active');
-  const titles={dashboard:'Dashboard',users:'User Management',loans:'Loan Requests',active:'Active Loans',overdue:'Overdue Loans'};
+  const titles={dashboard:'Dashboard',users:'User Management',loans:'Loan Requests',active:'Active Loans',overdue:'Overdue Loans',repayments:'Repayments',settings:'Payment Settings'};
   document.getElementById('adminTopTitle').textContent=titles[view]||view;
   if(view==='users') renderAdminUsers();
   else if(view==='loans') renderAdminLoans();
   else if(view==='active') renderAdminActive();
   else if(view==='overdue') renderAdminOverdue();
+  else if(view==='repayments') renderAdminRepayments();
+  else if(view==='settings') loadSettingsForm();
 }
 
 async function loadAdminDashboard(){
@@ -404,15 +448,11 @@ function renderAdminUsers(){
   if(!users.length){ body.innerHTML='<tr><td colspan="8" style="text-align:center;color:var(--text-muted);padding:24px">No registered users</td></tr>'; return; }
   body.innerHTML=users.map(u=>`<tr>
     <td><strong>${u.first_name} ${u.last_name}</strong><div style="font-size:.72rem;color:var(--text-muted)">${u.gender||''}</div></td>
-    <td>${u.email}</td><td>${u.contact||'—'}</td>
-    <td style="font-size:.82rem">${u.job_type||'—'}</td>
-    <td>${u.salary?fmt(u.salary):'—'}</td>
+    <td class="hide-mobile">${u.email}</td>
+    <td class="hide-mobile">${u.contact||'—'}</td>
+    <td class="hide-tablet" style="font-size:.82rem">${u.job_type||'—'}</td>
+    <td class="hide-tablet">${u.salary?fmt(u.salary):'—'}</td>
     <td>${statusBadge(u.status)}</td>
-    <td style="font-size:.75rem;color:var(--text-muted)">
-      <div>Registered: <span style="color:var(--text-secondary)">${fmtDateTime(u.created_at)}</span></div>
-      ${u.approved_at?`<div>Approved: <span style="color:var(--success)">${fmtDateTime(u.approved_at)}</span></div>`:''}
-      ${u.rejected_at?`<div>Rejected: <span style="color:var(--danger)">${fmtDateTime(u.rejected_at)}</span></div>`:''}
-    </td>
     <td>
       <button class="btn btn-ghost btn-xs" style="margin-right:4px" onclick="viewUserDetail('${u.id}')">View</button>
       ${u.status==='pending'?`<button class="btn btn-success btn-xs" style="margin-right:4px" onclick="approveUser('${u.id}')">Approve</button><button class="btn btn-danger btn-xs" onclick="declineUser('${u.id}')">Reject</button>`:''}
@@ -477,23 +517,52 @@ function renderAdminOverdue(){
 // ─── ADMIN ACTIONS ────────────────────────────────────────────────────
 async function approveUser(id){
   const now=new Date().toISOString();
-  await db.from('users').update({status:'approved',approved_at:now}).eq('id',id);
+  const { data, error } = await db.from('users').update({status:'approved'}).eq('id',id).select();
+  console.log('approveUser result:', {data, error, id});
+  if(error){ toast('Failed: '+error.message,'error'); return; }
+  if(!data || data.length===0){ 
+    toast('No rows updated — check if id matches','error'); 
+    console.warn('No rows updated for id:', id);
+    return; 
+  }
   await db.from('notifications').insert([{id:uid(),target:id,message:'Your account has been approved! You can now apply for a loan.',created_at:now,read:false}]);
   toast('User approved!','success');
-  await loadAdminDashboard(); renderAdminUsers();
+  await syncAll();
+  renderAdminUsers();
+  await loadAdminDashboard();
 }
 
 async function declineUser(id){
   const now=new Date().toISOString();
-  await db.from('users').update({status:'rejected',rejected_at:now}).eq('id',id);
+  const { data, error } = await db.from('users').update({status:'rejected'}).eq('id',id).select();
+  console.log('declineUser result:', {data, error, id});
+  if(error){ toast('Failed: '+error.message,'error'); return; }
+  if(!data || data.length===0){ 
+    toast('No rows updated — check if id matches','error'); 
+    return; 
+  }
   await db.from('notifications').insert([{id:uid(),target:id,message:'Your account application was rejected. Please contact support.',created_at:now,read:false}]);
   toast('User rejected.','error');
-  await loadAdminDashboard(); renderAdminUsers();
+  await syncAll();
+  renderAdminUsers();
+  await loadAdminDashboard();
 }
 
 function viewUserDetail(id){
   const u=localData.users.find(u=>u.id===id); if(!u) return;
   document.getElementById('modalUserTitle').textContent=`${u.first_name} ${u.last_name}`;
+
+  const imgStyle='width:100%;border-radius:10px;border:1px solid var(--border-soft);margin-top:6px;cursor:pointer;';
+  const imgSection = (u.id_front_url||u.id_back_url||u.payslip_url) ? `
+    <div style="margin-top:16px">
+      <div style="font-size:.72rem;color:var(--text-muted);font-weight:600;text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px">Uploaded Documents</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        ${u.id_front_url?`<div><div style="font-size:.72rem;color:var(--text-muted);margin-bottom:4px">ID Front</div><a href="${u.id_front_url}" target="_blank"><img src="${u.id_front_url}" alt="ID Front" style="${imgStyle}"></a></div>`:''}
+        ${u.id_back_url?`<div><div style="font-size:.72rem;color:var(--text-muted);margin-bottom:4px">ID Back</div><a href="${u.id_back_url}" target="_blank"><img src="${u.id_back_url}" alt="ID Back" style="${imgStyle}"></a></div>`:''}
+      </div>
+      ${u.payslip_url?`<div style="margin-top:10px"><div style="font-size:.72rem;color:var(--text-muted);margin-bottom:4px">Payslip</div><a href="${u.payslip_url}" target="_blank"><img src="${u.payslip_url}" alt="Payslip" style="${imgStyle}" onerror="this.style.display='none';this.nextSibling.style.display='flex'"><div style="display:none;align-items:center;gap:8px;padding:12px;background:rgba(0,212,255,.06);border-radius:8px;border:1px solid var(--border-soft)"><i class='fa-solid fa-file-pdf' style='color:var(--neon)'></i><a href='${u.payslip_url}' target='_blank' style='color:var(--neon);font-size:.85rem'>View Payslip PDF</a></div></a></div>`:''}
+    </div>` : '';
+
   document.getElementById('modalUserContent').innerHTML=`
     <div class="form-row" style="margin-bottom:16px">
       <div class="glass2" style="padding:16px;border-radius:12px"><div style="font-size:.72rem;color:var(--text-muted)">Status</div><div style="margin-top:6px">${statusBadge(u.status)}</div></div>
@@ -504,6 +573,7 @@ function viewUserDetail(id){
       ${detail('Address',u.address)}${detail('Job Type',u.job_type)}${detail('Employer',u.employer||'—')}
       ${detail('Monthly Salary',u.salary?fmt(u.salary):'—')}${detail('ID Type',u.id_type||'—')}
     </div>
+    ${imgSection}
     ${u.status==='pending'?`<div style="display:flex;gap:10px;margin-top:20px">
       <button class="btn btn-success" style="flex:1;justify-content:center" onclick="approveUser('${u.id}');closeModal('userDetailModal')">Approve</button>
       <button class="btn btn-danger" style="flex:1;justify-content:center" onclick="declineUser('${u.id}');closeModal('userDetailModal')">Reject</button>
@@ -514,24 +584,91 @@ function viewUserDetail(id){
 async function approveLoan(lid){
   const now=new Date().toISOString();
   const dueDate=addDays(new Date(),30);
-  await db.from('loans').update({status:'active',approved_at:now,disbursed_at:now,due_date:dueDate}).eq('id',lid);
+  const { data, error } = await db.from('loans')
+    .update({status:'active', disbursed_at:now, due_date:dueDate})
+    .eq('id',lid).select();
+  console.log('approveLoan:', {data, error, lid});
+  if(error){ toast('Failed: '+error.message,'error'); return; }
+  if(!data||data.length===0){ toast('No rows updated — RLS may be blocking update','error'); return; }
   const l=localData.loans.find(l=>l.id===lid);
   if(l) await db.from('notifications').insert([{id:uid(),target:l.user_id,message:`Your loan of ${fmt(l.amount)} has been approved and is now active!`,created_at:now,read:false}]);
   toast('Loan approved!','success');
-  await loadAdminDashboard(); renderAdminLoans();
+  await syncAll();
+  renderAdminLoans();
+  await loadAdminDashboard();
 }
 
 async function declineLoan(lid){
   const now=new Date().toISOString();
-  await db.from('loans').update({status:'declined',declined_at:now}).eq('id',lid);
+  const { data, error } = await db.from('loans')
+    .update({status:'declined'})
+    .eq('id',lid).select();
+  if(error){ toast('Failed: '+error.message,'error'); return; }
   const l=localData.loans.find(l=>l.id===lid);
   if(l) await db.from('notifications').insert([{id:uid(),target:l.user_id,message:`Your loan request of ${fmt(l.amount)} was declined.`,created_at:now,read:false}]);
   toast('Loan declined.','error');
-  await loadAdminDashboard(); renderAdminLoans();
+  await syncAll();
+  renderAdminLoans();
+  await loadAdminDashboard();
+}
+
+function renderAdminRepayments(){
+  const body=document.getElementById('adminRepaymentsBody');
+  const reps=[...localData.repayments].reverse();
+  if(!reps.length){ body.innerHTML='<tr><td colspan="8" style="text-align:center;color:var(--text-muted);padding:24px">No repayments yet</td></tr>'; return; }
+  body.innerHTML=reps.map(r=>{
+    const user=localData.users.find(u=>u.id===r.user_id)||{first_name:'Unknown',last_name:''};
+    const isPending=r.payment_status==='pending_verification';
+    const proofBtn = r.proof_url ? `<a href="${r.proof_url}" target="_blank" class="btn btn-ghost btn-xs"><i class="fa-solid fa-image"></i> View</a>` : 'N/A';
+    const statusCol = isPending ? `<span class="badge badge-warning"><i class="fa-solid fa-clock"></i> Pending</span>` : statusBadge('paid');
+    const actionCol = isPending ? `<button class="btn btn-success btn-xs" onclick="verifyRepayment('${r.id}','${r.loan_id}')">Verify</button>` : 'N/A';
+    return `<tr>
+      <td><strong>${user.first_name} ${user.last_name}</strong></td>
+      <td><strong style="color:var(--success)">${fmt(r.amount)}</strong></td>
+      <td>${r.method||'N/A'}</td>
+      <td style="font-size:.82rem">${r.reference_number||'N/A'}</td>
+      <td style="font-size:.78rem;color:var(--text-muted)">${fmtDateTime(r.created_at)}</td>
+      <td>${proofBtn}</td>
+      <td>${statusCol}</td>
+      <td>${actionCol}</td>
+    </tr>`;
+  }).join('');
+}
+
+async function verifyRepayment(repId, loanId){
+  await db.from('repayments').update({payment_status:'verified'}).eq('id',repId);
+  await db.from('loans').update({status:'paid'}).eq('id',loanId);
+  const r=localData.repayments.find(r=>r.id===repId);
+  if(r) await db.from('notifications').insert([{id:uid(),target:r.user_id,message:`Your payment of ${fmt(r.amount)} has been verified. Loan marked as paid!`,created_at:new Date().toISOString(),read:false}]);
+  toast('Payment verified!','success');
+  await syncAll(); renderAdminRepayments();
+}
+
+async function loadSettingsForm(){
+  if(!dbReady) return;
+  const { data }=await db.from('settings').select('*');
+  if(!data) return;
+  const s=Object.fromEntries(data.map(r=>[r.key,r.value]));
+  document.getElementById('set-gcash-number').value      = s.gcash_number||'';
+  document.getElementById('set-gcash-name').value        = s.gcash_name||'';
+  document.getElementById('set-bank-name').value         = s.bank_name||'';
+  document.getElementById('set-bank-account').value      = s.bank_account||'';
+  document.getElementById('set-bank-account-name').value = s.bank_account_name||'';
+}
+
+async function savePaymentSettings(){
+  const updates=[
+    {key:'gcash_number',      value:document.getElementById('set-gcash-number').value.trim()},
+    {key:'gcash_name',        value:document.getElementById('set-gcash-name').value.trim()},
+    {key:'bank_name',         value:document.getElementById('set-bank-name').value.trim()},
+    {key:'bank_account',      value:document.getElementById('set-bank-account').value.trim()},
+    {key:'bank_account_name', value:document.getElementById('set-bank-account-name').value.trim()},
+  ];
+  for(const u of updates){ await db.from('settings').upsert({key:u.key,value:u.value,updated_at:new Date().toISOString()}); }
+  toast('Payment settings saved!','success');
 }
 
 function filterAdminTable(){
-  const q=document.getElementById('adminSearch').value.toLowerCase();
   document.querySelectorAll('#adminUsersBody tr, #adminLoansBody tr').forEach(row=>{
     row.style.display=row.textContent.toLowerCase().includes(q)?'':'none';
   });
@@ -723,14 +860,45 @@ function renderOverdue(){
 function renderRepayments(){
   const body=document.getElementById('repaymentBody');
   const reps=localData.repayments.filter(r=>r.user_id===currentUser.id).reverse();
-  if(!reps.length){ body.innerHTML='<tr><td colspan="5" style="text-align:center;color:var(--text-muted);padding:24px">No repayments recorded yet</td></tr>'; return; }
+  if(!reps.length){ body.innerHTML='<tr><td colspan="6" style="text-align:center;color:var(--text-muted);padding:24px">No repayments recorded yet</td></tr>'; return; }
   body.innerHTML=reps.map(r=>`<tr>
     <td style="font-size:.8rem;color:var(--text-muted)">${r.loan_id?.slice(-6)||'—'}</td>
     <td><strong style="color:var(--success)">${fmt(r.amount)}</strong></td>
     <td style="font-size:.78rem;color:var(--text-muted)">${fmtDateTime(r.created_at)}</td>
     <td>${r.method||'—'}</td>
-    <td>${statusBadge('paid')}</td>
+    <td style="font-size:.78rem">${r.reference_number||'—'}</td>
+    <td>
+      ${r.proof_url?`<a href="${r.proof_url}" target="_blank" class="btn btn-ghost btn-xs"><i class="fa-solid fa-image"></i> View</a>`:'—'}
+    </td>
+    <td>
+      ${r.payment_status==='pending_verification'
+        ? `<span class="badge badge-warning"><i class="fa-solid fa-clock"></i> Verifying</span>`
+        : statusBadge('paid')}
+    </td>
   </tr>`).join('');
+}
+
+function handleProofUpload(input){
+  const zone = document.getElementById('proofZone');
+  const file = input.files[0];
+  if(file){
+    document.getElementById('proofFile').value = file.name;
+    zone.classList.add('has-file');
+    zone.querySelector('p').textContent = `✓ ${file.name}`;
+    zone.querySelector('i').className = 'fa-solid fa-circle-check';
+  }
+}
+
+async function loadPaymentDetails(){
+  if(!dbReady) return;
+  const { data } = await db.from('settings').select('*');
+  if(!data) return;
+  const s = Object.fromEntries(data.map(r=>[r.key, r.value]));
+  document.getElementById('pd-gcash-number').textContent = s.gcash_number || '—';
+  document.getElementById('pd-gcash-name').textContent   = s.gcash_name   || '';
+  document.getElementById('pd-bank-name').textContent    = s.bank_name    || 'Bank';
+  document.getElementById('pd-bank-account').textContent = s.bank_account || '—';
+  document.getElementById('pd-bank-account-name').textContent = s.bank_account_name || '';
 }
 
 function openRepayModal(lid){
@@ -738,20 +906,62 @@ function openRepayModal(lid){
   const loan=localData.loans.find(l=>l.id===lid); if(!loan) return;
   const penalty=loan.status==='overdue'?loan.amount*0.05:0;
   document.getElementById('repayAmount').value=(loan.total+penalty).toFixed(2);
+  // Reset form
+  document.getElementById('repayMethod').value='';
+  document.getElementById('repayReference').value='';
+  document.getElementById('proofFile').value='';
+  document.getElementById('repayError').style.display='none';
+  const zone=document.getElementById('proofZone');
+  zone.classList.remove('has-file');
+  zone.querySelector('p').textContent='Click to upload screenshot of payment';
+  zone.querySelector('i').className='fa-solid fa-camera';
+  loadPaymentDetails();
   openModal('repayModal');
 }
 
 async function submitRepayment(){
-  const amt=parseFloat(document.getElementById('repayAmount').value)||0;
-  const method=document.getElementById('repayMethod').value;
-  if(!amt||!repayLoanId){ toast('Please enter an amount','error'); return; }
+  const amt    = parseFloat(document.getElementById('repayAmount').value)||0;
+  const method = document.getElementById('repayMethod').value;
+  const ref    = document.getElementById('repayReference').value.trim();
+  const proofInput = document.querySelector('#proofZone input[type=file]');
+  const errEl  = document.getElementById('repayError');
+  errEl.style.display='none';
 
-  const rep={ id:uid(), loan_id:repayLoanId, user_id:currentUser.id, amount:amt, method, created_at:new Date().toISOString() };
-  await db.from('repayments').insert([rep]);
-  await db.from('loans').update({status:'paid'}).eq('id',repayLoanId);
+  if(!method){ errEl.style.display='flex'; document.getElementById('repayErrorMsg').textContent='Please select a payment method'; return; }
+  if(!ref){ errEl.style.display='flex'; document.getElementById('repayErrorMsg').textContent='Please enter the reference number'; return; }
+  if(!proofInput?.files[0]){ errEl.style.display='flex'; document.getElementById('repayErrorMsg').textContent='Please upload payment screenshot'; return; }
+  if(!amt||!repayLoanId){ toast('Invalid repayment','error'); return; }
 
+  const btn = document.querySelector('#repayModal .btn-primary');
+  btn.disabled=true; btn.innerHTML='<div class="spinner"></div> Submitting...';
+
+  // Upload proof image
+  let proofUrl='';
+  const proofFile = proofInput.files[0];
+  const proofPath = `${currentUser.id}/proof-${Date.now()}`;
+  const { data: uploadData, error: uploadError } = await db.storage.from('user-documents').upload(proofPath, proofFile, {upsert:true});
+  if(!uploadError) proofUrl = db.storage.from('user-documents').getPublicUrl(proofPath).data.publicUrl;
+
+  const rep={
+    id:uid(), loan_id:repayLoanId, user_id:currentUser.id,
+    amount:amt, method, reference_number:ref,
+    proof_url:proofUrl, payment_status:'pending_verification',
+    created_at:new Date().toISOString()
+  };
+
+  const { error } = await db.from('repayments').insert([rep]);
+  if(error){ toast('Failed to submit: '+error.message,'error'); btn.disabled=false; btn.innerHTML='<i class="fa-solid fa-paper-plane"></i> Submit Payment'; return; }
+
+  // Notify admin
+  await db.from('notifications').insert([{
+    id:uid(), target:'admin',
+    message:`Payment submitted by ${currentUser.first_name} ${currentUser.last_name} — ${fmt(amt)} via ${method} (Ref: ${ref})`,
+    created_at:new Date().toISOString(), read:false
+  }]);
+
+  btn.disabled=false; btn.innerHTML='<i class="fa-solid fa-paper-plane"></i> Submit Payment';
   closeModal('repayModal');
-  toast(`Payment of ${fmt(amt)} recorded successfully!`,'success');
+  toast(`Payment of ${fmt(amt)} submitted for verification!`,'success');
   await loadUserDashboard();
 }
 
@@ -772,6 +982,7 @@ window.addEventListener('load', async () => {
     if(saved.role==='admin'){
       showPage('adminDash');
       await loadAdminDashboard();
+      fixDashLayout();
     } else {
       afterUserLogin(saved);
       await loadUserDashboard();
@@ -784,8 +995,10 @@ window.addEventListener('load', async () => {
 document.addEventListener('click',(e)=>{
   if(!e.target.closest('.notif-panel')&&!e.target.closest('.notif-btn'))
     document.querySelectorAll('.notif-panel').forEach(p=>p.classList.remove('open'));
-  if(!e.target.closest('.sidebar')&&!e.target.closest('.mobile-toggle-inline'))
+  if(!e.target.closest('.sidebar')&&!e.target.closest('.mobile-toggle-inline')&&!e.target.closest('.sidebar-overlay')){
     document.querySelectorAll('.sidebar').forEach(s=>s.classList.remove('open'));
+    document.querySelectorAll('.sidebar-overlay').forEach(o=>o.classList.remove('show'));
+  }
 
   // Ripple on sidebar nav links
   const navItem = e.target.closest('.sidebar-nav a, .sidebar-nav button');
@@ -806,7 +1019,7 @@ Object.assign(window, {
   nextStep, prevStep, handleFileUpload, submitRegistration,
   adminView, toggleSidebar, toggleCollapse, toggleNotifPanel, closeNotif,
   filterAdminTable, approveUser, declineUser, viewUserDetail,
-  approveLoan, declineLoan,
+  approveLoan, declineLoan, verifyRepayment, savePaymentSettings,
   userView, calcLoanPreview, toggleWithdrawalDetails, submitLoanRequest,
-  openRepayModal, closeModal, submitRepayment,
+  openRepayModal, closeModal, submitRepayment, handleProofUpload,
 });
