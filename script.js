@@ -125,7 +125,31 @@ function detail(label,val){
   </div>`;
 }
 
-// ─── SCROLL ANIMATION ─────────────────────────────────────────────────
+// ─── THEME TOGGLE ─────────────────────────────────────────────────
+function toggleTheme(){
+  const isLight = document.body.classList.toggle('light-mode');
+  localStorage.setItem('ds_theme', isLight ? 'light' : 'dark');
+  updateThemeIcons(isLight);
+}
+
+function updateThemeIcons(isLight){
+  const icon = isLight ? 'fa-sun' : 'fa-moon';
+  ['themeIcon','themeIconAdmin','themeIconUser'].forEach(id=>{
+    const el = document.getElementById(id);
+    if(el) el.className = `fa-solid ${icon}`;
+  });
+}
+
+function applyTheme(){
+  const saved = localStorage.getItem('ds_theme');
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const isLight = saved === 'light' || (!saved && !prefersDark);
+  if(isLight) document.body.classList.add('light-mode');
+  updateThemeIcons(isLight);
+}
+
+// Apply theme immediately before page renders
+applyTheme();
 const nav = document.getElementById('mainNav');
 window.addEventListener('scroll',()=>{
   nav.classList.toggle('scrolled', window.scrollY>60);
@@ -1015,7 +1039,7 @@ document.addEventListener('click',(e)=>{
 
 // ─── GLOBAL EXPORTS ───────────────────────────────────────────────────
 Object.assign(window, {
-  showPage, togglePass, handleLogin, handleLogout,
+  showPage, togglePass, toggleTheme, handleLogin, handleLogout,
   nextStep, prevStep, handleFileUpload, submitRegistration,
   adminView, toggleSidebar, toggleCollapse, toggleNotifPanel, closeNotif,
   filterAdminTable, approveUser, declineUser, viewUserDetail,
