@@ -4,9 +4,17 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>DS Personal Loan — Modern Lending Platform</title>
+<meta name="description" content="Your Trusted Financial Backup — fast, easy, reliable personal loans.">
+<meta name="theme-color" content="#0a1628">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="DS Loan">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="/loanapp/assets/logo-Bp6-olO-.png">
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet">
-  <script type="module" crossorigin src="/loanapp/assets/index-g_FHfWFl.js"></script>
-  <link rel="stylesheet" crossorigin href="/loanapp/assets/index-Dc-KuX3B.css">
+  <script type="module" crossorigin src="/loanapp/assets/index-CK4QSkmK.js"></script>
+  <link rel="stylesheet" crossorigin href="/loanapp/assets/index-BZH1WTEK.css">
 </head>
 <body>
 
@@ -43,6 +51,9 @@
     </div>
     <button class="btn btn-primary btn-sm" onclick="showPage('login')">
       <i class="fa-solid fa-right-to-bracket"></i> Get Started
+    </button>
+    <button class="theme-toggle" onclick="toggleTheme()" title="Toggle theme">
+      <i class="fa-solid fa-moon" id="themeIcon"></i>
     </button>
   </nav>
 
@@ -300,6 +311,7 @@
   <div class="auth-page">
     <div class="auth-container">
       <div class="glass auth-box">
+
         <div class="auth-logo">
           <div class="logo">
             <img class="logo-img" src="/loanapp/assets/logo-Bp6-olO-.png" alt="DS Personal Loan logo">
@@ -307,8 +319,6 @@
             <span class="logo-tagline">Your Trusted Financial Backup</span>
           </div>
         </div>
-        <h2 class="auth-title">Welcome Back</h2>
-        <p class="auth-sub">Sign in to your account</p>
 
         <div class="alert alert-error" id="loginError">
           <i class="fa-solid fa-circle-exclamation"></i>
@@ -346,6 +356,7 @@
         <div style="text-align:center;margin-top:12px">
           <a href="#" onclick="showPage('landing')" style="font-size:.8rem;color:var(--text-muted)">← Back to Home</a>
         </div>
+
       </div>
     </div>
   </div>
@@ -587,34 +598,65 @@
           <span class="neon-text">DS Personal Loan</span>
           <span class="logo-tagline">Your Trusted Financial Backup</span>
         </div>
-        <div style="font-size:.7rem;color:var(--text-muted);margin-top:4px">Admin Panel</div>
+        <div class="admin-badge">Admin Panel</div>
+        <button class="sidebar-collapse-btn" onclick="toggleCollapse('adminSidebar')" title="Toggle Sidebar">
+          <i class="fa-solid fa-chevron-left"></i>
+        </button>
       </div>
       <nav class="sidebar-nav">
-        <div class="sidebar-section-title">Overview</div>
-        <a href="#" class="active" onclick="adminView('dashboard',this)"><i class="fa-solid fa-gauge"></i> Dashboard</a>
-        <div class="sidebar-section-title">Management</div>
-        <a href="#" onclick="adminView('users',this)"><i class="fa-solid fa-users"></i> User Management</a>
-        <a href="#" onclick="adminView('loans',this)"><i class="fa-solid fa-file-invoice-dollar"></i> Loan Requests</a>
-        <a href="#" onclick="adminView('active',this)"><i class="fa-solid fa-circle-dot"></i> Active Loans</a>
-        <a href="#" onclick="adminView('overdue',this)"><i class="fa-solid fa-triangle-exclamation"></i> Overdue Loans</a>
+        <a href="#" class="active" onclick="adminView('dashboard',this)">
+          <span class="nav-icon"><i class="fa-solid fa-gauge"></i></span>
+          <span class="nav-label">Dashboard</span>
+        </a>
+        <a href="#" onclick="adminView('users',this)">
+          <span class="nav-icon"><i class="fa-solid fa-users"></i></span>
+          <span class="nav-label">User Management</span>
+        </a>
+        <a href="#" onclick="adminView('loans',this)">
+          <span class="nav-icon"><i class="fa-solid fa-file-invoice-dollar"></i></span>
+          <span class="nav-label">Loan Requests</span>
+        </a>
+        <a href="#" onclick="adminView('active',this)">
+          <span class="nav-icon"><i class="fa-solid fa-circle-dot"></i></span>
+          <span class="nav-label">Active Loans</span>
+        </a>
+        <a href="#" onclick="adminView('overdue',this)">
+          <span class="nav-icon"><i class="fa-solid fa-triangle-exclamation"></i></span>
+          <span class="nav-label">Overdue Loans</span>
+        </a>
+        <a href="#" onclick="adminView('repayments',this)">
+          <span class="nav-icon"><i class="fa-solid fa-receipt"></i></span>
+          <span class="nav-label">Repayments</span>
+        </a>
+        <a href="#" onclick="adminView('settings',this)">
+          <span class="nav-icon"><i class="fa-solid fa-gear"></i></span>
+          <span class="nav-label">Payment Settings</span>
+        </a>
       </nav>
       <div class="sidebar-footer">
         <div class="sidebar-user">
           <div class="user-avatar">A</div>
           <div class="user-info">
             <strong>Admin</strong>
-            <small>davenstarr@gmail.com</small>
+            <small>DS Personal Loan</small>
           </div>
         </div>
-        <button class="btn btn-ghost btn-sm" style="width:100%;justify-content:center;margin-top:14px" onclick="handleLogout()">
-          <i class="fa-solid fa-right-from-bracket"></i> Logout
+        <button class="sidebar-logout" onclick="handleLogout()">
+          <i class="fa-solid fa-right-from-bracket"></i>
+          <span>Logout</span>
         </button>
       </div>
     </aside>
 
+    <div class="sidebar-overlay" id="adminOverlay" onclick="toggleSidebar('adminSidebar')"></div>
     <main class="dash-main">
       <div class="dash-topbar">
-        <h2 id="adminTopTitle">Dashboard</h2>
+        <div style="display:flex;align-items:center;gap:12px">
+          <button class="mobile-toggle-inline" onclick="toggleSidebar('adminSidebar')">
+            <i class="fa-solid fa-bars"></i>
+          </button>
+          <h2 id="adminTopTitle">Dashboard</h2>
+        </div>
         <div class="topbar-right">
           <div class="search-bar" style="width:220px">
             <i class="fa-solid fa-search"></i>
@@ -624,6 +666,9 @@
             <i class="fa-solid fa-bell"></i>
             <span class="notif-dot" id="adminNotifDot"></span>
           </div>
+          <button class="theme-toggle" onclick="toggleTheme()" title="Toggle theme">
+            <i class="fa-solid fa-moon" id="themeIconAdmin"></i>
+          </button>
         </div>
       </div>
 
@@ -712,7 +757,13 @@
             <div class="table-wrap" style="border:none;border-radius:0">
               <table>
                 <thead><tr>
-                  <th>Name</th><th>Email</th><th>Contact</th><th>Job</th><th>Salary</th><th>Status</th><th>Actions</th>
+                  <th>Name</th>
+                  <th class="hide-mobile">Email</th>
+                  <th class="hide-mobile">Contact</th>
+                  <th class="hide-tablet">Job</th>
+                  <th class="hide-tablet">Salary</th>
+                  <th>Status</th>
+                  <th>Actions</th>
                 </tr></thead>
                 <tbody id="adminUsersBody"></tbody>
               </table>
@@ -770,12 +821,61 @@
             </div>
           </div>
         </div>
+
+        <!-- ADMIN REPAYMENTS VIEW -->
+        <div id="adminView-repayments" style="display:none">
+          <div class="section-header" style="margin-bottom:20px">
+            <h3>Repayment Submissions</h3>
+          </div>
+          <div class="glass">
+            <div class="table-wrap" style="border:none;border-radius:0">
+              <table>
+                <thead><tr>
+                  <th>Borrower</th><th>Amount</th><th>Method</th><th>Reference #</th><th>Date</th><th>Proof</th><th>Status</th><th>Action</th>
+                </tr></thead>
+                <tbody id="adminRepaymentsBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- ADMIN PAYMENT SETTINGS -->
+        <div id="adminView-settings" style="display:none">
+          <div class="section-header" style="margin-bottom:20px">
+            <h3>Payment Settings</h3>
+          </div>
+          <div class="glass" style="padding:28px;max-width:560px">
+            <p style="font-size:.85rem;color:var(--text-muted);margin-bottom:24px">These details will be shown to borrowers when they make a repayment.</p>
+            <div class="form-group">
+              <label>GCash Number</label>
+              <input class="form-control" id="set-gcash-number" placeholder="09XX XXX XXXX">
+            </div>
+            <div class="form-group">
+              <label>GCash Account Name</label>
+              <input class="form-control" id="set-gcash-name" placeholder="Full Name">
+            </div>
+            <div class="form-group">
+              <label>Bank Name</label>
+              <input class="form-control" id="set-bank-name" placeholder="e.g. BDO, BPI">
+            </div>
+            <div class="form-group">
+              <label>Bank Account Number</label>
+              <input class="form-control" id="set-bank-account" placeholder="1234 5678 9012">
+            </div>
+            <div class="form-group">
+              <label>Bank Account Name</label>
+              <input class="form-control" id="set-bank-account-name" placeholder="Full Name">
+            </div>
+            <button class="btn btn-primary" onclick="savePaymentSettings()">
+              <i class="fa-solid fa-floppy-disk"></i> Save Settings
+            </button>
+          </div>
+        </div>
+
       </div>
     </main>
   </div>
-  <button class="mobile-toggle" onclick="toggleSidebar('adminSidebar')">
-    <i class="fa-solid fa-bars"></i>
-  </button>
+<!-- END ADMIN DASH -->
 </div>
 
 <!-- ══════════════════════════════════════════════════════════════════
@@ -790,14 +890,35 @@
           <span class="neon-text">DS Personal Loan</span>
           <span class="logo-tagline">Your Trusted Financial Backup</span>
         </div>
+        <button class="sidebar-collapse-btn" onclick="toggleCollapse('userSidebar')" title="Toggle Sidebar">
+          <i class="fa-solid fa-chevron-left"></i>
+        </button>
       </div>
-        <a href="#" class="active" onclick="userView('overview',this)"><i class="fa-solid fa-gauge"></i> Overview</a>
-        <div class="sidebar-section-title">Loans</div>
-        <a href="#" onclick="userView('request',this)"><i class="fa-solid fa-plus-circle"></i> Request Loan</a>
-        <a href="#" onclick="userView('disbursed',this)"><i class="fa-solid fa-money-bill-transfer"></i> Disbursed Loans</a>
-        <a href="#" onclick="userView('active',this)"><i class="fa-solid fa-circle-dot"></i> Active Loans</a>
-        <a href="#" onclick="userView('overdue',this)"><i class="fa-solid fa-triangle-exclamation"></i> Overdue Loans</a>
-        <a href="#" onclick="userView('repayment',this)"><i class="fa-solid fa-receipt"></i> Repayments</a>
+      <nav class="sidebar-nav">
+        <a href="#" class="active" onclick="userView('overview',this)">
+          <span class="nav-icon"><i class="fa-solid fa-gauge"></i></span>
+          <span class="nav-label">Overview</span>
+        </a>
+        <a href="#" onclick="userView('request',this)">
+          <span class="nav-icon"><i class="fa-solid fa-plus-circle"></i></span>
+          <span class="nav-label">Request Loan</span>
+        </a>
+        <a href="#" onclick="userView('disbursed',this)">
+          <span class="nav-icon"><i class="fa-solid fa-money-bill-transfer"></i></span>
+          <span class="nav-label">Disbursed Loans</span>
+        </a>
+        <a href="#" onclick="userView('active',this)">
+          <span class="nav-icon"><i class="fa-solid fa-circle-dot"></i></span>
+          <span class="nav-label">Active Loans</span>
+        </a>
+        <a href="#" onclick="userView('overdue',this)">
+          <span class="nav-icon"><i class="fa-solid fa-triangle-exclamation"></i></span>
+          <span class="nav-label">Overdue Loans</span>
+        </a>
+        <a href="#" onclick="userView('repayment',this)">
+          <span class="nav-icon"><i class="fa-solid fa-receipt"></i></span>
+          <span class="nav-label">Repayments</span>
+        </a>
       </nav>
       <div class="sidebar-footer">
         <div class="sidebar-user">
@@ -807,20 +928,30 @@
             <small id="sidebarUserEmail">user@email.com</small>
           </div>
         </div>
-        <button class="btn btn-ghost btn-sm" style="width:100%;justify-content:center;margin-top:14px" onclick="handleLogout()">
-          <i class="fa-solid fa-right-from-bracket"></i> Logout
+        <button class="sidebar-logout" onclick="handleLogout()">
+          <i class="fa-solid fa-right-from-bracket"></i>
+          <span>Logout</span>
         </button>
       </div>
     </aside>
 
+    <div class="sidebar-overlay" id="userOverlay" onclick="toggleSidebar('userSidebar')"></div>
     <main class="dash-main">
       <div class="dash-topbar">
-        <h2 id="userTopTitle">Overview</h2>
+        <div style="display:flex;align-items:center;gap:12px">
+          <button class="mobile-toggle-inline" onclick="toggleSidebar('userSidebar')">
+            <i class="fa-solid fa-bars"></i>
+          </button>
+          <h2 id="userTopTitle">Overview</h2>
+        </div>
         <div class="topbar-right">
           <div class="notif-btn" onclick="toggleNotifPanel('userNotif')">
             <i class="fa-solid fa-bell"></i>
             <span class="notif-dot" id="userNotifDot"></span>
           </div>
+          <button class="theme-toggle" onclick="toggleTheme()" title="Toggle theme">
+            <i class="fa-solid fa-moon" id="themeIconUser"></i>
+          </button>
         </div>
       </div>
 
@@ -934,9 +1065,54 @@
                   <span style="font-size:.72rem;color:var(--text-muted)">Max: <span id="maxLoanDisplay">₱15,000</span></span>
                 </div>
               </div>
+
               <div class="form-group">
                 <label>Purpose / Notes</label>
                 <textarea class="form-control" id="loanPurpose" rows="3" placeholder="Briefly describe the purpose of this loan..."></textarea>
+              </div>
+
+              <!-- WITHDRAWAL METHOD -->
+              <div class="form-group">
+                <label>Withdrawal Method *</label>
+                <select class="form-control" id="withdrawalMethod" onchange="toggleWithdrawalDetails()">
+                  <option value="">Select how you want to receive the money</option>
+                  <optgroup label="E-Wallet">
+                    <option value="GCash">GCash</option>
+                    <option value="Maya (PayMaya)">Maya (PayMaya)</option>
+                    <option value="ShopeePay">ShopeePay</option>
+                    <option value="GrabPay">GrabPay</option>
+                  </optgroup>
+                  <optgroup label="Bank Transfer">
+                    <option value="BDO">BDO</option>
+                    <option value="BPI">BPI</option>
+                    <option value="Metrobank">Metrobank</option>
+                    <option value="UnionBank">UnionBank</option>
+                    <option value="Landbank">Landbank</option>
+                    <option value="PNB">PNB</option>
+                    <option value="RCBC">RCBC</option>
+                    <option value="Security Bank">Security Bank</option>
+                  </optgroup>
+                  <optgroup label="Other">
+                    <option value="Cash Pickup">Cash Pickup (In-person)</option>
+                    <option value="Remittance">Remittance Center</option>
+                  </optgroup>
+                </select>
+              </div>
+
+              <div id="withdrawalDetails" style="display:none">
+                <div class="glass2" style="padding:18px;margin-bottom:20px;border:1px solid rgba(0,212,255,.2)">
+                  <div style="font-size:.78rem;color:var(--neon);margin-bottom:12px;font-weight:600;text-transform:uppercase;letter-spacing:.08em">
+                    <i class="fa-solid fa-circle-info"></i> Withdrawal Details
+                  </div>
+                  <div class="form-group" style="margin-bottom:12px">
+                    <label id="withdrawalAccountLabel">Account Number / Mobile Number *</label>
+                    <input class="form-control" id="withdrawalAccount" placeholder="e.g. 09XX XXX XXXX">
+                  </div>
+                  <div class="form-group" style="margin-bottom:0">
+                    <label>Account Name *</label>
+                    <input class="form-control" id="withdrawalName" placeholder="Full name on account">
+                  </div>
+                </div>
               </div>
 
               <!-- LOAN PREVIEW -->
@@ -1014,7 +1190,7 @@
           <div class="glass">
             <div class="table-wrap" style="border:none;border-radius:0">
               <table>
-                <thead><tr><th>Loan Ref</th><th>Amount Paid</th><th>Payment Date</th><th>Method</th><th>Status</th></tr></thead>
+                <thead><tr><th>Loan Ref</th><th>Amount</th><th>Date</th><th>Method</th><th>Reference #</th><th>Proof</th><th>Status</th></tr></thead>
                 <tbody id="repaymentBody"></tbody>
               </table>
             </div>
@@ -1023,9 +1199,7 @@
       </div>
     </main>
   </div>
-  <button class="mobile-toggle" onclick="toggleSidebar('userSidebar')">
-    <i class="fa-solid fa-bars"></i>
-  </button>
+<!-- END USER DASH -->
 </div>
 
 <!-- ══════════════════════════════════════════════════════════════════
@@ -1043,23 +1217,70 @@
 <div class="modal-overlay" id="repayModal">
   <div class="modal-box">
     <button class="modal-close" onclick="closeModal('repayModal')"><i class="fa-solid fa-xmark"></i></button>
-    <h3 style="margin-bottom:20px;font-size:1.1rem">Make a Repayment</h3>
+    <h3 style="margin-bottom:4px;font-size:1.1rem">Make a Repayment</h3>
+    <p style="font-size:.82rem;color:var(--text-muted);margin-bottom:20px">Send payment to the details below then upload your proof.</p>
+
+    <!-- ADMIN PAYMENT DETAILS -->
+    <div id="adminPaymentDetails" class="glass2" style="padding:16px;margin-bottom:20px;border:1px solid rgba(0,212,255,.2)">
+      <div style="font-size:.72rem;color:var(--neon);font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px">
+        <i class="fa-solid fa-circle-info"></i> Send Payment To
+      </div>
+      <div style="display:grid;gap:8px" id="paymentDetailsContent">
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:rgba(0,212,255,.06);border-radius:8px">
+          <span style="font-size:.8rem;color:var(--text-muted)"><i class="fa-solid fa-mobile-screen" style="color:#00d4ff;margin-right:6px"></i>GCash</span>
+          <div style="text-align:right">
+            <div style="font-weight:700;font-size:.9rem" id="pd-gcash-number">Loading...</div>
+            <div style="font-size:.75rem;color:var(--text-muted)" id="pd-gcash-name"></div>
+          </div>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:rgba(0,212,255,.06);border-radius:8px">
+          <span style="font-size:.8rem;color:var(--text-muted)"><i class="fa-solid fa-building-columns" style="color:#0090ff;margin-right:6px"></i><span id="pd-bank-name">Bank</span></span>
+          <div style="text-align:right">
+            <div style="font-weight:700;font-size:.9rem" id="pd-bank-account">Loading...</div>
+            <div style="font-size:.75rem;color:var(--text-muted)" id="pd-bank-account-name"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div id="repayModalContent">
       <div class="form-group">
         <label>Amount to Pay (₱)</label>
-        <input type="number" class="form-control" id="repayAmount" placeholder="0.00">
+        <input type="number" class="form-control" id="repayAmount" placeholder="0.00" readonly style="background:rgba(0,212,255,.06);font-weight:700;color:var(--neon)">
       </div>
       <div class="form-group">
-        <label>Payment Method</label>
+        <label>Payment Method *</label>
         <select class="form-control" id="repayMethod">
+          <option value="">Select payment method</option>
           <option>GCash</option>
           <option>Maya</option>
-          <option>Bank Transfer</option>
-          <option>Cash</option>
+          <option>BDO</option>
+          <option>BPI</option>
+          <option>Metrobank</option>
+          <option>UnionBank</option>
+          <option>Other Bank Transfer</option>
         </select>
       </div>
+      <div class="form-group">
+        <label>Reference Number *</label>
+        <input class="form-control" id="repayReference" placeholder="e.g. 1234567890">
+        <div style="font-size:.75rem;color:var(--text-muted);margin-top:4px">GCash/bank transaction reference number</div>
+      </div>
+      <div class="form-group">
+        <label>Payment Proof (Screenshot) *</label>
+        <div class="file-upload-zone" id="proofZone">
+          <input type="file" accept="image/*" onchange="handleProofUpload(this)">
+          <i class="fa-solid fa-camera"></i>
+          <p>Click to upload screenshot of payment</p>
+        </div>
+        <input type="hidden" id="proofFile">
+      </div>
+      <div class="alert alert-error" id="repayError" style="display:none">
+        <i class="fa-solid fa-circle-exclamation"></i>
+        <span id="repayErrorMsg"></span>
+      </div>
       <button class="btn btn-primary" style="width:100%;justify-content:center" onclick="submitRepayment()">
-        <i class="fa-solid fa-check"></i> Confirm Payment
+        <i class="fa-solid fa-paper-plane"></i> Submit Payment
       </button>
     </div>
   </div>
